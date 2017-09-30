@@ -1,14 +1,14 @@
 // freeze to prevent user change value
 module.exports = Object.freeze({
   // Key
-  kSource: "src",
-  kHeight: "h",
-  kWidth: "w",
-  kType: "type",
-  kContent: "content",
-  kCaption: "caption",
-  kThumb: "thumb",
-  kTitle: "title",
+  kSource: 'src',
+  kHeight: 'h',
+  kWidth: 'w',
+  kType: 'type',
+  kContent: 'content',
+  kCaption: 'caption',
+  kThumb: 'thumb',
+  kTitle: 'title',
 
   // CODE
   TEXT_CODE: 1,
@@ -35,5 +35,5 @@ module.exports = Object.freeze({
   ERROR_REQUEST_TIME_OUT: 408,
   ERROR_BAD_GATEWAY: 502
 
-  
+
 });

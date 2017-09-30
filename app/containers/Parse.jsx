@@ -4,9 +4,8 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import parse from '../actions/parse';
 import ReactDOM from 'react-dom';
-import JSONTree from 'react-json-tree'
-import Form from "react-jsonschema-form";
-import {InputField} from '../components/JsonSchema'
+import JSONTree from 'react-json-tree';
+import Form from 'react-jsonschema-form';
 
 class Parse extends Component {
 
@@ -23,7 +22,6 @@ class Parse extends Component {
             .value;
 
         if (url.trim().length > 0) {
-
             this
                 .props
                 .parseUrl(url);
@@ -39,27 +37,27 @@ class Parse extends Component {
         const theme = {
             scheme: 'custom',
             author: 'custom',
-            base00: '#ffffff', //BACKGROUND_COLOR
+            base00: '#ffffff', // BACKGROUND_COLOR
             base01: '#383830',
             base02: '#49483e',
-            base03: '#dd2adf', //ITEM_STRING_EXPANDED_COLOR
+            base03: '#dd2adf', // ITEM_STRING_EXPANDED_COLOR
             base04: '#a59f85',
             base05: '#f8f8f2',
             base06: '#f5f4f1',
-            base07: '#f9f8f5', //TEXT_COLOR
-            base08: '#c0c1c3', //NULL_COLOR,UNDEFINED_COLOR,FUNCTION_COLOR,SYMBOL_COLOR
-            base09: '#ff0000', //NUMBER_COLOR, BOOLEAN_COLOR
+            base07: '#f9f8f5', // TEXT_COLOR
+            base08: '#c0c1c3', // NULL_COLOR,UNDEFINED_COLOR,FUNCTION_COLOR,SYMBOL_COLOR
+            base09: '#ff0000', // NUMBER_COLOR, BOOLEAN_COLOR
             base0A: '#f4bf75',
-            base0B: '#989898', //STRING_COLOR, DATE_COLOR, ITEM_STRING_COLOR
+            base0B: '#989898', // STRING_COLOR, DATE_COLOR, ITEM_STRING_COLOR
             base0C: '#a1efe4',
-            base0D: '#2ebff6', //LABEL_COLOR, ARROW_COLOR
+            base0D: '#2ebff6', // LABEL_COLOR, ARROW_COLOR
             base0E: '#ae81ff',
             base0F: '#cc6633'
         };
 
         const schema = {
-            type: "object",
-            title: "Create news topic froms",
+            type: 'object',
+            title: 'Topic',
             properties: {
                 name: {
                     type: 'string',
@@ -68,23 +66,31 @@ class Parse extends Component {
                 description: {
                     type: 'string',
                     title: 'Description'
+                },
+                catelogries: {
+                    title: 'Catelogry',
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            catelogryItem: {
+                                "type": "string"
+                            }
+                        }
+                    }
+
                 }
             }
-        }
-
-        const uiSchema = {
-            "ui:wiget": "SchemaField"
         };
 
-
-        const fields = {SchemaField: InputField};
+        const uiSchema = {};
 
         return (
             <section className="content">
 
                 <header className="main-header clearfix">
                     <h1 className="main-header__title">
-                        <i className="icon pe-7s-edit"></i>
+                        <i className="icon pe-7s-edit"/>
                         API
                         <small>
                             Console</small>
@@ -101,9 +107,9 @@ class Parse extends Component {
                         </li>
                     </ul>
                     <div className="main-header__date">
-                        <i className="icon pe-7s-date"></i>
+                        <i className="icon pe-7s-date"/>
                         <span>December 30, 2013</span>
-                        <i className="pe-7s-angle-down-circle"></i>
+                        <i className="pe-7s-angle-down-circle"/>
                     </div>
                 </header>
 
@@ -118,14 +124,14 @@ class Parse extends Component {
 
                             <div className="row">
                                 <div className="ct-parse-input">
-                                    <input type="text" placeholder="Input a url here !!!" ref="url"></input>
+                                    <input type="text" placeholder="Input a url here !!!" ref="url"/>
                                     <button type="button" className="btn btn-grey" onClick={this._handleClickParse}>Parse</button>
                                 </div>
                             </div>
 
                             <div className="row ct-parse-pre">
                                 <pre>
-                                <JSONTree
+                            <JSONTree
                                     data={this.props.parser}
                                     theme={{
                                     extend: theme,
@@ -134,31 +140,32 @@ class Parse extends Component {
                                         fontWeight: 300,
                                         color: '#f41919',
                                     },
-                                    nestedNodeLabel: ({ style }, nodeType, expanded) => ({ 
-                                        style: { ...style, textTransform: expanded ? 'initial' : style.textTransform,  fontWeight: 300} 
-                                        }) 
+                                    nestedNodeLabel: ({ style }, nodeType, expanded) => ({
+                                        style: { ...style, textTransform: expanded ? 'initial' : style.textTransform, fontWeight: 300}
+                                        })
                                     }}
                                     invertTheme={false}
-                                    getItemString={(type, data, itemType, itemString) => (<span>{itemType} {itemString} <em className="json-three-italic">{type}</em></span>)} 
+                                    getItemString={(type, data, itemType, itemString) => (<span>{itemType} {itemString} <em className="json-three-italic">{type}</em></span>)}
                                     labelRenderer={([raw]) => <span>{raw}:</span>}
-                                    valueRenderer={raw => <span>{raw}</span>} 
-                                    shouldExpandNode={this._jsonNodeExpand} 
-                                    hideRoot={true}/>
-                                </pre>
-                            </div>
+                                    valueRenderer={raw => <span>{raw}</span>}
+                                    shouldExpandNode={this._jsonNodeExpand}
+                                    hideRoot />
+                    </pre>
+                  </div>
 
-                            <div className="ct-parse-creator">
-                            <Form className="ct-parse-json-form"
-                                schema={schema}
-                                uiSchema={uiSchema} 
-                                fields={fields} />
-                                </div>
-                        </div>
+                  <div className="ct-parse-creator">
+                    <Form
+                        className="ct-parse-json-form"
+                        schema={schema}
+                        uiSchema={uiSchema}
+                        />
+                  </div>
+                </div>
 
-                    </article>
-                </div>      
+              </article>
+            </div>
 
-            </section>
+          </section>
         );
     }
 

@@ -8,6 +8,7 @@ import initRoutes from './init/routes';
 import renderMiddleware from './render/middleware';
 
 import log4js from 'log4js';
+
 log4js.configure({
   appenders: { debug: { type: 'file', filename: './logs/debug.log' } },
   categories: { default: { appenders: ['debug'], level: 'debug' } }

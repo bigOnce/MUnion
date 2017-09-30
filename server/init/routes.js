@@ -56,21 +56,17 @@ export default (app) => {
   }
 
 
-  // general 
+  // general
   if (generalController) {
     app.get('/general/nodetypes', generalController.noteTypeList);
-
-  }else {
+  } else {
     console.warn(unsupportedMessage('general routes'));
   }
 
 
   if (parseController) {
     app.post('/api/parse', parseController.parseURL);
-  }else {
+  } else {
     console.warn(unsupportedMessage('general routes'));
   }
-
-
-
 };

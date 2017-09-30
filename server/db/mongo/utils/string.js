@@ -1,11 +1,10 @@
 export function isEmpty(str) {
-    if (str === undefined || str === null)
-        return true;
+    if (str === undefined || str === null) { return true; }
 
-    if (str.trim() == "" || str.trim().length == 0) {
+    if (str.trim() == '' || str.trim().length == 0) {
            return true;
     }
-    
+
     return false;
 }
 
@@ -15,8 +14,8 @@ export function startsWith(str, word) {
 
 
 export function httpfactory(str) {
-    if (!this.startsWith(str, "http") && !this.startsWith(str, "https")) {
-        return "http://" + str;
+    if (!this.startsWith(str, 'http') && !this.startsWith(str, 'https')) {
+        return 'http://' + str;
     }
     return str;
 }

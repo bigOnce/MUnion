@@ -5,14 +5,14 @@ import {connect} from 'react-redux';
 
 const Footer = ({}) => {
     return (
-        <footer className="main-footer">
-            <a className="back-top" href="#">
-                <i className="pe-7s-angle-up-circle"></i>
-            </a>
-            <p>2013 © Levo by Pixeden.</p>
-        </footer>
+      <footer className="main-footer">
+        <a className="back-top" href="#">
+          <i className="pe-7s-angle-up-circle" />
+        </a>
+        <p>2013 © Levo by Pixeden.</p>
+      </footer>
     );
-}
+};
 
 Footer.propTypes = {
 };

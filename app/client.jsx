@@ -42,7 +42,6 @@ function onUpdate() {
 }
 
 
-
 // Router converts <Route> element hierarchy to a route config:
 // Read more https://github.com/rackt/react-router/blob/latest/docs/Glossary.md#routeconfig
 ReactDOM.render(

@@ -5,9 +5,9 @@ export default() => {
     const client = createRestApiClient().withConfig({baseURL: apiEndpoint});
     return {
         parseUrl: ({url}) => client.request({
-            method: 'POST', 
-            url: '/api/parse', 
-            data: {topic: {url}} 
+            method: 'POST',
+            url: '/api/parse',
+            data: {topic: {url}}
         })
     };
 };

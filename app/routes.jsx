@@ -31,14 +31,14 @@ export default (store) => {
   };
   return (
     <Router>
-    <Route path="/" component={App}>
-      <IndexRoute component={Manager} />
-      <Route path="login" component={LoginOrRegister} onEnter={redirectAuth} />
-      <Route path="dashboard" component={Dashboard} onEnter={requireAuth} />
-      <Route path="api" component={Api} />
-      <Route path="about" component={About} />
-      <Route path="parse" component={ParsePage} />
-    </Route>
+      <Route path="/" component={App}>
+        <IndexRoute component={Manager} />
+        <Route path="login" component={LoginOrRegister} onEnter={redirectAuth} />
+        <Route path="dashboard" component={Dashboard} onEnter={requireAuth} />
+        <Route path="api" component={Api} />
+        <Route path="about" component={About} />
+        <Route path="parse" component={ParsePage} />
+      </Route>
     </Router>
   );
 };

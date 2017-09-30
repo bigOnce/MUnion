@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+
 const Schema = mongoose.Schema;
 
 const typeSchema = new Schema({
@@ -12,9 +13,9 @@ const typeSchema = new Schema({
 }, {versionKey: false});
 
 typeSchema.methods.toJSON = function () {
-    var obj = this.toObject();
+    const obj = this.toObject();
     delete obj._id;
     return obj;
-}
+};
 
 export default mongoose.model('NodeType', typeSchema);

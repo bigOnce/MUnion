@@ -17,12 +17,12 @@ import Footer from '../containers/Footer';
 const App = ({children}) => {
   return (
     <div>
-      <Navigation/>
-      <Message/>
+      <Navigation />
+      <Message />
       <div className="wrapper">
-        <Sidebar/>
+        <Sidebar />
         {children}
-        <Footer/>
+        <Footer />
       </div>
     </div>
   );

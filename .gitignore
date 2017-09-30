@@ -10,3 +10,4 @@ coverage/
 compiled
 *.swp
 .vscode
+node_modules/*

@@ -13,7 +13,7 @@ const ApiDashboard = () => {
 
       <header className="main-header clearfix">
         <h1 className="main-header__title">
-          <i className="icon pe-7s-edit"></i>
+          <i className="icon pe-7s-edit" />
           API
           <small>
             Console</small>
@@ -27,9 +27,9 @@ const ApiDashboard = () => {
           </li>
         </ul>
         <div className="main-header__date">
-          <i className="icon pe-7s-date"></i>
+          <i className="icon pe-7s-date" />
           <span>December 30, 2013</span>
-          <i className="pe-7s-angle-down-circle"></i>
+          <i className="pe-7s-angle-down-circle" />
         </div>
       </header>
 

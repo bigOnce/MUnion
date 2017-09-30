@@ -28,7 +28,7 @@ class Api extends Component {
   render() {
     return (
       <Page {...this.getMetaData()}>
-        <ApiDashboard {...this.props}/>
+        <ApiDashboard {...this.props} />
       </Page>
     );
   }

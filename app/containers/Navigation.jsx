@@ -15,16 +15,16 @@ const Navigation = ({user, logOut}) => {
         <input
           type="text"
           placeholder="Search for task, goal &amp; review"
-          id="msearch"/>
-        <label for="msearch">
-          <i className="pe-7s-search"></i>
+          id="msearch" />
+        <label htmlFor="msearch">
+          <i className="pe-7s-search" />
         </label>
       </div>
 
       <ul className="profile">
         <li>
           <a href="#">
-            <i className="pe-7f-config"></i>
+            <i className="pe-7f-config" />
           </a>
         </li>
       </ul>

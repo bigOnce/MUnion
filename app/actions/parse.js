@@ -15,9 +15,8 @@ export function parseSuccess(message) {
 
 export function parseURL(url) {
     return (dispatch) => {
-        if (url.trim().length <= 0) 
-            return;
-        
+        if (url.trim().length <= 0) { return; }
+
         return parseService()
             .parseUrl({url})
             .then((res) => {
