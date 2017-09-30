@@ -6,6 +6,7 @@ import parse from '../actions/parse';
 import ReactDOM from 'react-dom';
 import JSONTree from 'react-json-tree';
 import Form from 'react-jsonschema-form';
+import {ArrayField} from '../components/JsonSchema';
 
 class Parse extends Component {
 
@@ -73,7 +74,13 @@ class Parse extends Component {
                     items: {
                         type: 'object',
                         properties: {
-                            catelogryItem: {
+                            title: {
+                                "type": "string"
+                            },
+                            desc: {
+                                "type": "string"
+                            },
+                            tag: {
                                 "type": "string"
                             }
                         }
@@ -83,7 +90,14 @@ class Parse extends Component {
             }
         };
 
-        const uiSchema = {};
+        const uiSchema = {
+            classNames: "jschema-layout"
+        };
+
+        const formData = {
+            name: "First task",
+            description: "ccccc"
+        };
 
         return (
             <section className="content">
@@ -158,6 +172,8 @@ class Parse extends Component {
                         className="ct-parse-json-form"
                         schema={schema}
                         uiSchema={uiSchema}
+                        formData={formData}
+                        ArrayFieldTemplate={ArrayField}
                         />
                   </div>
                 </div>
