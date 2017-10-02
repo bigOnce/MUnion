@@ -6,7 +6,6 @@ import parse from '../actions/parse';
 import ReactDOM from 'react-dom';
 import JSONTree from 'react-json-tree';
 import Form from 'react-jsonschema-form';
-import {ArrayField} from '../components/JsonSchema';
 
 class Parse extends Component {
 
@@ -14,6 +13,10 @@ class Parse extends Component {
         super(props);
         this._handleClickParse = this
             ._handleClickParse
+            .bind(this);
+
+        this._jschemaOnUpdate = this
+            ._jschemaOnUpdate
             .bind(this);
     }
 
@@ -31,7 +34,16 @@ class Parse extends Component {
 
     _jsonNodeExpand(keyName, data, level) {
         // console.log(keyName + data + level);
+
         return false;
+    }
+
+    _jschemaOnUpdate({formData}) {
+        if (formData) {
+            this
+                .props
+                .parseAddDataForm(formData);
+        }
     }
 
     render() {
@@ -86,6 +98,24 @@ class Parse extends Component {
                         }
                     }
 
+                },
+                contents: {
+                    title: 'Content',
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            title: {
+                                "type": "string"
+                            },
+                            desc: {
+                                "type": "string"
+                            },
+                            tag: {
+                                "type": "string"
+                            }
+                        }
+                    }
                 }
             }
         };
@@ -94,10 +124,8 @@ class Parse extends Component {
             classNames: "jschema-layout"
         };
 
-        const formData = {
-            name: "First task",
-            description: "ccccc"
-        };
+        const onError = (errors) => alert("I have", errors.length, "errors to fix");
+        const onSubmit = ({formData}) => console.log("yay I'm valid!");
 
         return (
             <section className="content">
@@ -163,7 +191,7 @@ class Parse extends Component {
                                     labelRenderer={([raw]) => <span>{raw}:</span>}
                                     valueRenderer={raw => <span>{raw}</span>}
                                     shouldExpandNode={this._jsonNodeExpand}
-                                    hideRoot />
+                                    />
                     </pre>
                   </div>
 
@@ -172,8 +200,10 @@ class Parse extends Component {
                         className="ct-parse-json-form"
                         schema={schema}
                         uiSchema={uiSchema}
-                        formData={formData}
-                        ArrayFieldTemplate={ArrayField}
+                        formData={this.props.parseData}
+                        onError={onError}
+                        onSubmit={onSubmit}
+                        onChange={this._jschemaOnUpdate}
                         />
                   </div>
                 </div>
@@ -189,11 +219,19 @@ class Parse extends Component {
 
 Parse.propTypes = {
     parseUrl: PropTypes.func.isRequired,
-    parser: PropTypes.object
+    parser: PropTypes.object,
+    parseData: PropTypes.object.isRequired,
+    parseAddDataForm: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
-    return {parser: state.parse.parser};
+    return {
+        parser: state.parse.parser,
+        parseData: state.parse.parseDataForm || {}
+    };
 }
 
-export default connect(mapStateToProps, {parseUrl: parse.parseURL})(Parse);
+export default connect(mapStateToProps, {
+    parseUrl: parse.parseURL,
+    parseAddDataForm: parse.parseAddDataForm
+})(Parse);

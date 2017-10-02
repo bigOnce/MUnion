@@ -85,7 +85,7 @@
 
 .jschema-layout {
     margin: 0px 0px;
-    background-color: #F0E9F0;
+    background-color: rgba(240, 233, 240, 0);
     padding: 8px 8px;
     label {
         color: #7E7A7A;
@@ -97,6 +97,7 @@
         color: #0707F5;
         font-size: 16px;
         font-weight: bold;
+        margin: 10px auto;
     }
     input {
         font-size: 14px;
@@ -127,7 +128,22 @@ div.array-item {
     border: 1px solid $skyblue-light;
     margin: 16px auto;
     padding: 8px 8px;
+    width: 88%;
     label {
         color: #4B4A49;
     }
+}
+
+button.btn-add {
+    background: #15C415;
+    width: 40px;
+    float: right;
+}
+
+button.btn-add:hover {
+    background: #10A110;
+}
+
+div.field-array {
+    margin-top: 50px;
 }

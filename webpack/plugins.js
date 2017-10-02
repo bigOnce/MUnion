@@ -14,7 +14,7 @@ module.exports = ({
     warnings: false
   };
   const compileTimeConstantForMinification = {
-    __PRODUCTION__: JSON.stringify(production),    
+    __PRODUCTION__: JSON.stringify(production)
   };
 
   if (!production && !browser) {
@@ -26,7 +26,7 @@ module.exports = ({
         $: 'jquery',
         jQuery: 'jquery',
         'window.jQuery': 'jquery',
-        Tether: 'tether',
+        Tether: 'tether'
       })
     ];
   }
@@ -40,8 +40,7 @@ module.exports = ({
         $: 'jquery',
         jQuery: 'jquery',
         'window.jQuery': 'jquery',
-        Tether: 'tether',
-        
+        Tether: 'tether'
       })
     ];
   }
@@ -57,8 +56,7 @@ module.exports = ({
         $: 'jquery',
         jQuery: 'jquery',
         'window.jQuery': 'jquery',
-        Tether: 'tether',
-        
+        Tether: 'tether'
       })
     ];
   }
@@ -75,8 +73,7 @@ module.exports = ({
         $: 'jquery',
         jQuery: 'jquery',
         'window.jQuery': 'jquery',
-        Tether: 'tether',
-        
+        Tether: 'tether'
       })
     ];
   }

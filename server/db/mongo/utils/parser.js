@@ -9,7 +9,7 @@ export function parseUrl(url, callback) {
     if (url) {
         url = stringUtil.httpfactory(url);
         let webparse = {
-            header: {},
+            head: {},
             body: {}
         };
         request(url, (error, response, html) => {
@@ -23,20 +23,57 @@ export function parseUrl(url, callback) {
 
                 $('head').each((i, element) => {
                     const title = $('title').text();
-                    const desc = $('meta[name=description]').attr('content');
-                    const keywords = $('meta[name=keywords]').attr('content');
-                    const fbappid = $('meta[property="fb:app_id"]').attr('content');
-                    const link = $('link[rel="canonical"]').attr('href');
+                    const description = {
+                        tag: 'meta',
+                        name: 'description',
+                        attr: 'content',
+                        content: $('meta[name="description"]').attr('content')
+                    };
+                    const keywords = {
+                        tag: 'meta',
+                        name: 'keywords',
+                        attr: 'content',
+                        content: $('meta[name="keywords"]').attr('content')
+                    };
+                    const fbappid = {
+                        tag: 'meta',
+                        property: 'fb:app_id',
+                        attr: 'content',
+                        content: $('meta[property="fb:app_id"]').attr('content')
+                    };
+                    const link = {
+                        tag: 'link',
+                        rel: 'canonical',
+                        attr: 'href',
+                        href: $('link[rel="canonical"]').attr('href')
+                    };
 
-                    const header = {
+                    const logo = {
+                        tag: 'meta',
+                        property: 'og:image',
+                        attr: 'content',
+                        content: $('meta[property="og:image"]').attr('content')
+                    };
+
+                    const copyright = {
+                        tag: 'meta',
+                        name: 'copyright',
+                        attr: 'content',
+                        content: $('meta[name="copyright"]').attr('content')
+                    }
+
+                    const head = {
                         title,
-                        desc,
+                        description,
                         keywords,
                         fbappid,
-                        link
-                    };
+                        link,
+                        logo,
+                        copyright
+                    }
+
                     webparse = {
-                        header,
+                        head,
                         body: webparse.body
                     };
                 });
@@ -75,19 +112,22 @@ export function parseUrl(url, callback) {
                                                 const child_node_tag_class = $(childItem).attr('class');
                                                 const child_node_tag_href = $(childItem).attr('href');
                                                 const child_node_source = $(childItem).attr('src');
+                                                const child_node_name = $(childItem).attr('name');
+
                                                 childListObject.push({
                                                     id: child_node_tag_id,
                                                     class: child_node_tag_class,
                                                     href: child_node_tag_href,
                                                     src: child_node_source,
+                                                    name: child_node_name,
                                                     [child_tag_name]: parseTag(childItem)
                                                 });
                                             }
                                         });
                                         return childListObject;
                                     }
-                                        const string = $(tag).text();
-                                        return string;
+                                    const string = $(tag).text();
+                                    return string;
                                 };
 
                                 return parseTag(item);
@@ -100,11 +140,10 @@ export function parseUrl(url, callback) {
                                 [tagname]: tagNode(item)
                             };
                             body.push(itemObject);
-                        } else {
-                        }
+                        } else {}
                     });
                     webparse = {
-                        header: webparse.header,
+                        head: webparse.head,
                         body
                     };
                 }
