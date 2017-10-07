@@ -67,7 +67,7 @@
     margin: 20px 0px;
     display: flex;
     flex: 1;
-    background-color: #E6F5F3;
+    background-color: #E4FAFF;
 }
 
 .ct-parse-json-form {
@@ -84,7 +84,6 @@
 }
 
 .jschema-layout {
-    margin: 0px 0px;
     background-color: rgba(240, 233, 240, 0);
     padding: 8px 8px;
     label {
@@ -92,12 +91,6 @@
         font-size: 16px;
         padding: 0px 2px;
         margin: 10px 4px;
-    }
-    legend {
-        color: #0707F5;
-        font-size: 16px;
-        font-weight: bold;
-        margin: 10px auto;
     }
     input {
         font-size: 14px;
@@ -121,6 +114,21 @@
         padding: 4px 4px;
         margin: 4px 4px;
         border-radius: 5px;
+    }
+    div.field-object {
+        border: 1px solid $skyblue-light;
+        padding: 8px 16px;
+        background-color: #E9F1F3;   
+        max-width: 500px; 
+        margin: 8px auto;   
+        legend {
+            color: #2D30F3;
+            font-size: 16px;
+            font-weight: 300;
+            margin: 20px 8px;
+            text-align: left;            
+        }
+        
     }
 }
 
@@ -147,3 +155,23 @@ button.btn-add:hover {
 div.field-array {
     margin-top: 50px;
 }
+
+button.array-item-remove {
+    width: 40px;
+    float: right;
+    background: #E91010;    
+}
+
+
+
+div.field-object {
+    padding: 8px 16px;
+    legend {
+        color: #2D30F3;
+        font-size: 18px;
+        font-weight: bold;
+        margin: 20px 8px;
+        text-align: center;
+    }
+}
+

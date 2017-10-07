@@ -2,3 +2,8 @@
 [2017-09-17 13:49:32.456] [INFO] debug - dataType.js: Object DataType create success!
 [2017-09-27 17:30:26.095] [INFO] debug - datatype.js: Object NodeType create success!
 [2017-09-30 02:03:27.254] [INFO] debug - datatype.js: Object NodeType create success!
+[2017-10-05 11:49:02.459] [INFO] debug - filter.js: Object Filters create success!
+[2017-10-06 10:54:15.580] [INFO] debug - filter.js: Object Filters create success!
+[2017-10-06 10:54:15.591] [INFO] debug - datatype.js: Object NodeType create success!
+[2017-10-06 11:01:40.881] [INFO] debug - datatype.js: Object NodeType create success!
+[2017-10-06 11:01:41.614] [INFO] debug - filter.js: Object Filters create success!

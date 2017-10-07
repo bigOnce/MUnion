@@ -6,6 +6,8 @@
 ## parse url
 
 
-```api
-link : /parse
+```parse api
+link : domain/api/parse,
+parse topic filter: parse home from url get {title, description, doamin, logo, keywords, fbappid, categories, subcategories}
+parse categoryitem: 
 ```

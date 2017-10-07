@@ -70,15 +70,98 @@ class Parse extends Component {
 
         const schema = {
             type: 'object',
-            title: 'Topic',
+            title: 'Publisher',
+            "required": ["name", "domain", "catelogries"],
             properties: {
-                name: {
-                    type: 'string',
-                    title: 'Name'
+                title: {
+                    type: 'object',
+                    title: 'Title',
+                    properties: {
+                        selector: {
+                            "type": "string"
+                        },
+                        attr: {
+                            "type": "string"
+                        },
+                        opts: {
+                            "type": "string"
+                        },
+                    }
                 },
                 description: {
-                    type: 'string',
-                    title: 'Description'
+                    title: 'Description',
+                    type: 'object',
+                    properties: {
+                        selector: {
+                            "type": "string"
+                        },
+                        attr: {
+                            "type": "string"
+                        },
+                        opts: {
+                            "type": "string"
+                        },
+                    }
+                },
+                domain: {
+                    title: 'Domain',
+                    type: 'object',
+                    properties: {
+                        selector: {
+                            "type": "string"
+                        },
+                        attr: {
+                            "type": "string"
+                        },
+                        opts: {
+                            "type": "string"
+                        },
+                    }
+                },
+                logo: {
+                    title: 'Logo',
+                    type: 'object',
+                    properties: {
+                        selector: {
+                            "type": "string"
+                        },
+                        attr: {
+                            "type": "string"
+                        },
+                        opts: {
+                            "type": "string"
+                        },
+                    }
+                },
+                publisher: {
+                    title: 'Publisher',
+                    type: 'object',
+                    properties: {
+                        selector: {
+                            "type": "string"
+                        },
+                        attr: {
+                            "type": "string"
+                        },
+                        opts: {
+                            "type": "string"
+                        },
+                    }
+                },
+                keywords: {
+                    title: 'Keywords',
+                    type: 'object',
+                    properties: {
+                        selector: {
+                            "type": "string"
+                        },
+                        attr: {
+                            "type": "string"
+                        },
+                        opts: {
+                            "type": "string"
+                        },
+                    }
                 },
                 catelogries: {
                     title: 'Catelogry',
@@ -117,11 +200,13 @@ class Parse extends Component {
                         }
                     }
                 }
-            }
+            },
+
         };
 
         const uiSchema = {
-            classNames: "jschema-layout"
+            classNames: "jschema-layout",
+
         };
 
         const onError = (errors) => alert("I have", errors.length, "errors to fix");

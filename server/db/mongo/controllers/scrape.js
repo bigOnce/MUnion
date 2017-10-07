@@ -1,4 +1,6 @@
 import * as scrape from '../utils/scrape';
+import Filters from '../models/filter';
+import constant from '../constant';
 
 /**
  * scrape url with htmltag{class, id}
@@ -6,38 +8,41 @@ import * as scrape from '../utils/scrape';
  * @param {url, data} res
  */
 export function scrapeWithFilter(req, res) {
-    var filter = req.body.filter;
+    var filterReq = req.body.filter;
     const url = req.body.url;
 
-    filter = {
-        title: 'head title',
-        description: {
-            selector: 'head meta[name=description]',
-            attr: 'content'
-        },
-        menu: {
-            listItem: 'nav[id=main_menu] a',
-            data: {
-                title: {
-                    attr: "title"
-                },
-                url: {
-                    attr: 'href'
-                }
+    // vnexpress home
+    Filters
+        .findOne({filterId: 'vnexpress'})
+        .exec((err, filter) => {
+            if (err) {
+                console.log('Error in first query');
+                return res
+                    .status(500)
+                    .send('Something went wrong getting the data');
             }
-        }
-    }
 
-    if (url && filter) {
-        scrape.scrape(url, filter, () => {});
-        res
-            .status(200)
-            .send('successed');
-    } else 
-        res
-            .status(500)
-            .send('error');
-    }
+            if (url && filter) {
+                scrape.scrape(url, filter, (err, rs) => {
+                    if (err != constant.ERROR) {
+                        res
+                        .status(200)
+                        .json(rs);
+                    } else {
+                        res
+                        .status(500)
+                        .send('error');
+                    }
+                });
+
+            } else 
+                res
+                    .status(500)
+                    .send('error');
+            }
+        );
+
+}
 
 export default {
     scrapeWithFilter
