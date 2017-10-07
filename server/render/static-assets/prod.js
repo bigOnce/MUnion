@@ -15,7 +15,6 @@ ga('send', 'pageview');
 <script async src='https://www.google-analytics.com/analytics.js'></script>`;
 
 const createStylesheets = () => `
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed" />
 <link rel="stylesheet" href="/assets/${assets['app.css']}" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 `;
