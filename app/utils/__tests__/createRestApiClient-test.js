@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import expect from 'expect';
 import createRestApiClient from '../createRestApiClient';
+import { apiEndpoint } from '../../../config/app';
 
 const apiServer = () => {
   const app = express();
@@ -25,7 +26,6 @@ const apiServer = () => {
 describe('RESTful api client', () => {
   let client;
   let server;
-  const apiEndpoint = 'http://localhost:3001';
 
   beforeEach(() => {
     client = createRestApiClient().withConfig({ baseUrl: apiEndpoint });
