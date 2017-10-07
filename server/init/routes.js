@@ -10,6 +10,7 @@ const topicsController = controllers && controllers.topics;
 const generalController = controllers && controllers.general;
 const parseController = controllers && controllers.parse;
 const scrapeController = controllers && controllers.scrape;
+const sendFileController = controllers && controllers.sendfile;
 
 export default(app) => {
   // user routes
@@ -65,6 +66,13 @@ export default(app) => {
 
   if (scrapeController) {
     app.post('/api/scrape', scrapeController.scrapeWithFilter);
+  } else {
+    console.warn(unsupportedMessage('scrape routes'));
+  }
+
+  if (sendFileController) {
+    app.get('/src/mp3', sendFileController.sendMp3File);
+
   } else {
     console.warn(unsupportedMessage('scrape routes'));
   }

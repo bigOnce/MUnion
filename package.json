@@ -9,6 +9,7 @@
         "lint": "eslint --ext .js,.jsx app server",
         "lint:fix": "eslint --ext .js,.jsx app server --fix",
         "clean": "rimraf public && rimraf compiled",
+        "mclean": "rimraf node_modules",
         "start": "npm run build && cross-env NODE_ENV=production node compiled/server.js",
         "dev": "cross-env NODE_ENV=development nodemon",
         "build:dev": "cross-env NODE_ENV=development npm run webpack -- --env.server",

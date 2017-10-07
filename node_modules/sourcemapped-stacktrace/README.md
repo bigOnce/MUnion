@@ -39,7 +39,8 @@ Re-map entries in a stacktrace using sourcemaps if available.
 
 **Arguments:**
 
-- *stack*: Array of strings from the browser's stack representation. 
+- *stack*: Array of strings from the browser's stack representation. Currently only Chrome 
+and Firefox format is supported.
 
 - *done*: Callback invoked with the transformed stacktrace (an Array of Strings) passed as the first argument
 
@@ -50,14 +51,6 @@ Re-map entries in a stacktrace using sourcemaps if available.
   - *cacheGlobally*: Boolean. If `true`, sourcemaps are cached across multiple `mapStackTrace()` calls,
                      allowing for better performance if called repeatedly, or when browser's cache is disabled.
                      Defaults to `false`.
-
-**Supported browsers**
-  - Chrome
-  - Firefox
-  - Safari
-  - Internet Explorer 11 and up
-  - Microsoft Edge
-
 ## Example
 
 ```javascript

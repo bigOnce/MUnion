@@ -3,6 +3,7 @@ import users from './users';
 import general from './general';
 import parse from './parse';
 import scrape from './scrape';
+import sendfile from './sendfile';
 
 // export {topics, users, general};
 
@@ -11,5 +12,6 @@ export default {
   users,
   general,
   parse,
-  scrape
+  scrape,
+  sendfile
 };
