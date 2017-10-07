@@ -17,6 +17,7 @@ ga('send', 'pageview');
 const createStylesheets = () => `
 <link rel="stylesheet" href="/assets/${assets['app.css']}" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<meta http-equiv="Content-Security-Policy" content="default-src https:">
 `;
 
 export {createAppScript, createTrackingScript, createStylesheets};
