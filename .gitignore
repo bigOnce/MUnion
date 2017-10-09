@@ -3,11 +3,11 @@
 .idea
 dump.rdb
 .vscode/
-public/*
+public/
 dist
 coverage/
 .nyc_output/
-compiled
+compiled/
 *.swp
 .vscode
-node_modules/*
+node_modules/
