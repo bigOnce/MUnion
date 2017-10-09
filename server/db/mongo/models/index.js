@@ -3,4 +3,7 @@ export default function loadModels() {
   require('./user');
   require('./nodetype');
   require('./filter');
+  require('./newsnode');
+  require('./publisher');
+  require('./apps');
 }

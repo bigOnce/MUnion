@@ -4,6 +4,8 @@ import general from './general';
 import parse from './parse';
 import scrape from './scrape';
 import sendfile from './sendfile';
+import audionews from './audio_news';
+import * as news from './news';
 
 // export {topics, users, general};
 
@@ -13,5 +15,7 @@ export default {
   general,
   parse,
   scrape,
-  sendfile
+  sendfile,
+  audionews,
+  news
 };

@@ -11,6 +11,7 @@ const generalController = controllers && controllers.general;
 const parseController = controllers && controllers.parse;
 const scrapeController = controllers && controllers.scrape;
 const sendFileController = controllers && controllers.sendfile;
+const audioNewsController = controllers && controllers.audionews;
 
 export default(app) => {
   // user routes
@@ -72,6 +73,13 @@ export default(app) => {
 
   if (sendFileController) {
     app.get('/src/mp3', sendFileController.sendMp3File);
+
+  } else {
+    console.warn(unsupportedMessage('scrape routes'));
+  }
+
+  if (audioNewsController) {
+    app.get('/news/t_audio', audioNewsController.all);
 
   } else {
     console.warn(unsupportedMessage('scrape routes'));

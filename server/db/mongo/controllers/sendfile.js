@@ -8,7 +8,7 @@ export function sendMp3File(req, res) {
 
     // res.sendFile(__dirname + '../../../../src/mp3/tmclnd.mp3');
     // res.sendFile(path.resolve(app.get('appPath') + '/src/mp3/tmclnd.mp3'));
-    res.sendFile('/mp3/tmclnd.mp3', {"root": PATHS.src});
+    res.sendFile('/mp3/04-chi-tien-bit-mieng-chu-tau-1497087052.mp3', {"root": PATHS.src});
 
 }
 

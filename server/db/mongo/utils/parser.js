@@ -22,42 +22,39 @@ export function parseUrl(url, callback) {
                 });
 
                 $('head').each((i, element) => {
-                    const title = $('title').text();
+                    const title = {
+                        filter: 'head title',
+                        content: $('title').text()
+                    };
                     const description = {
-                        tag: 'meta',
-                        name: 'description',
+                        filter: 'meta[name="description"]',
                         attr: 'content',
                         content: $('meta[name="description"]').attr('content')
                     };
                     const keywords = {
-                        tag: 'meta',
-                        name: 'keywords',
+                        filter: 'meta[name="keywords"]',
                         attr: 'content',
                         content: $('meta[name="keywords"]').attr('content')
                     };
                     const fbappid = {
-                        tag: 'meta',
-                        property: 'fb:app_id',
+                        filter: 'meta[property="fb:app_id"]',
                         attr: 'content',
                         content: $('meta[property="fb:app_id"]').attr('content')
                     };
                     const link = {
-                        tag: 'link',
-                        rel: 'canonical',
+                        filter: 'link[rel="canonical"]',
                         attr: 'href',
                         href: $('link[rel="canonical"]').attr('href')
                     };
 
                     const logo = {
-                        tag: 'meta',
-                        property: 'og:image',
+                        filter: 'meta[property="og:image"]',
                         attr: 'content',
                         content: $('meta[property="og:image"]').attr('content')
                     };
 
                     const copyright = {
-                        tag: 'meta',
-                        name: 'copyright',
+                        filter: 'meta[name="copyright"]',
                         attr: 'content',
                         content: $('meta[name="copyright"]').attr('content')
                     }

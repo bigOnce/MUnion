@@ -37,7 +37,10 @@ module.exports = Object.freeze({
   ERROR_METHOD_NOT_ALLOWED: 405,
   ERROR_NOT_ACCEPTABLE: 405,
   ERROR_REQUEST_TIME_OUT: 408,
-  ERROR_BAD_GATEWAY: 502
+  ERROR_BAD_GATEWAY: 502,
 
+
+  // Define APPS Id
+  NEWS_APP_ID: 'vinabao',
 
 });

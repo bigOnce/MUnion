@@ -11,6 +11,7 @@ export default function () {
     if (count > 0) {
       return;
     }
+
     const type1 = new NodeType({ code: Constant.TEXT_CODE, type: 'TEXT', desc: 'Define for TEXT Node'});
     const type2 = new NodeType({ code: Constant.IMAGE_CODE, type: 'IMAGE', desc: 'Define for IMAGE Node'});
 
@@ -27,5 +28,7 @@ export default function () {
         logger.info('datatype.js: Object NodeType create success!');
       }
     });
+    
   });
+
 }

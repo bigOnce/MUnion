@@ -3,6 +3,7 @@ import config from './config';
 import loadModels from './models';
 import dataTypes from './dataloader/datatype';
 import filters from './dataloader/filter';
+import newsnode from './dataloader/newsnode'
 
 export default () => {
   // Find the appropriate database to connect to, default to localhost if not found.
@@ -24,6 +25,7 @@ export default () => {
         // feed some dummy data in DB.
         dataTypes();
         filters();
+        newsnode();
     });
   };
   connect();
