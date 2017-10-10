@@ -70,114 +70,24 @@ class Parse extends Component {
 
         const schema = {
             type: 'object',
-            title: 'Publisher',
+            title: 'NEWS Tools Develop',
             "required": ["name", "domain", "catelogries"],
             properties: {
-                title: {
-                    type: 'object',
-                    title: 'Title',
-                    properties: {
-                        selector: {
-                            "type": "string"
-                        },
-                        attr: {
-                            "type": "string"
-                        },
-                        opts: {
-                            "type": "string"
-                        },
-                    }
-                },
-                description: {
-                    title: 'Description',
-                    type: 'object',
-                    properties: {
-                        selector: {
-                            "type": "string"
-                        },
-                        attr: {
-                            "type": "string"
-                        },
-                        opts: {
-                            "type": "string"
-                        },
-                    }
-                },
-                domain: {
-                    title: 'Domain',
-                    type: 'object',
-                    properties: {
-                        selector: {
-                            "type": "string"
-                        },
-                        attr: {
-                            "type": "string"
-                        },
-                        opts: {
-                            "type": "string"
-                        },
-                    }
-                },
-                logo: {
-                    title: 'Logo',
-                    type: 'object',
-                    properties: {
-                        selector: {
-                            "type": "string"
-                        },
-                        attr: {
-                            "type": "string"
-                        },
-                        opts: {
-                            "type": "string"
-                        },
-                    }
-                },
-                publisher: {
-                    title: 'Publisher',
-                    type: 'object',
-                    properties: {
-                        selector: {
-                            "type": "string"
-                        },
-                        attr: {
-                            "type": "string"
-                        },
-                        opts: {
-                            "type": "string"
-                        },
-                    }
-                },
-                keywords: {
-                    title: 'Keywords',
-                    type: 'object',
-                    properties: {
-                        selector: {
-                            "type": "string"
-                        },
-                        attr: {
-                            "type": "string"
-                        },
-                        opts: {
-                            "type": "string"
-                        },
-                    }
-                },
                 catelogries: {
                     title: 'Catelogry',
                     type: 'array',
                     items: {
                         type: 'object',
                         properties: {
-                            title: {
+                            selector: {
                                 "type": "string"
                             },
-                            desc: {
+                            attr: {
                                 "type": "string"
                             },
-                            tag: {
+                            opts: {
                                 "type": "string"
-                            }
+                            },
                         }
                     }
 
@@ -188,15 +98,15 @@ class Parse extends Component {
                     items: {
                         type: 'object',
                         properties: {
-                            title: {
+                            selector: {
                                 "type": "string"
                             },
-                            desc: {
+                            attr: {
                                 "type": "string"
                             },
-                            tag: {
+                            opts: {
                                 "type": "string"
-                            }
+                            },
                         }
                     }
                 }
@@ -272,8 +182,8 @@ class Parse extends Component {
                                         })
                                     }}
                                     invertTheme={false}
-                                    getItemString={(type, data, itemType, itemString) => (<span>{itemType} {itemString} <em className="json-three-italic">{type}</em></span>)}
-                                    labelRenderer={([raw]) => <span>{raw}:</span>}
+                                    getItemString={(type, data, itemType, itemString) => (<span></span>)} //{itemType} {itemString} <em className="json-three-italic">{type}</em>
+                                    labelRenderer={([raw]) => <span>{raw}</span>}
                                     valueRenderer={raw => <span>{raw}</span>}
                                     shouldExpandNode={this._jsonNodeExpand}
                                     />
