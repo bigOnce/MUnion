@@ -12,6 +12,7 @@ const parseController = controllers && controllers.parse;
 const scrapeController = controllers && controllers.scrape;
 const sendFileController = controllers && controllers.sendfile;
 const audioNewsController = controllers && controllers.audionews;
+const filtersController = controllers && controllers.news.filters;
 
 export default(app) => {
   // user routes
@@ -80,6 +81,14 @@ export default(app) => {
 
   if (audioNewsController) {
     app.get('/news/t_audio', audioNewsController.all);
+
+  } else {
+    console.warn(unsupportedMessage('scrape routes'));
+  }
+
+
+  if (filtersController) {
+    app.post('/api/news/setfilter', filtersController.setFilter);
 
   } else {
     console.warn(unsupportedMessage('scrape routes'));

@@ -76,7 +76,7 @@ export function parseUrl(url, callback) {
                 });
 
                 // define parse node item
-                const parseNodeDetail = function (tag_name, nodeItem) {
+                const parseNodeDetail = function (tag_name, nodeItem, index) {
                     if (tag_name !== 'script' && tag_name !== 'noscript' && tag_name !== 'iframe') {
 
                         const child_node_tag_id = $(nodeItem).attr('id');
@@ -86,7 +86,7 @@ export function parseUrl(url, callback) {
                         const child_node_name = $(nodeItem).attr('name');
 
        
-                        return "<" + [tag_name] + ((child_node_tag_id) ? (" id=\"" + [child_node_tag_id]) + "\"" : "") + ((child_node_tag_class) ? (" class=\"" + [child_node_tag_class] + "\"") : "") + ((child_node_tag_href) ? (" href=\"" + [child_node_tag_href] + "\"") : "") + ((child_node_name) ? (" name=\"" + [child_node_name] + "\"") : "") + ((child_node_source) ? (" src=\"" + [child_node_source] + "\"") : "") + ">";
+                        return "<" + [tag_name] + ((child_node_tag_id) ? (" id=\"" + [child_node_tag_id]) + "\"" : "") + ((child_node_tag_class) ? (" class=\"" + [child_node_tag_class] + "\"") : "") + ((child_node_tag_href) ? (" href=\"" + [child_node_tag_href] + "\"") : "") + ((child_node_name) ? (" name=\"" + [child_node_name] + "\"") : "") + ((child_node_source) ? (" src=\"" + [child_node_source] + "\"") : "") + " >" + "      " + index ;
                     }
                 }
 
@@ -102,10 +102,10 @@ export function parseUrl(url, callback) {
                 const bodyItems = $('body')
                     .children()
                     .toArray();
-                if (bodyItems.length > 0) {
-                    bodyItems.map((item) => {
-                        
 
+                if (bodyItems.length > 0) {
+                    bodyItems.map((item, index) => {
+                        
                         const tagname = $(item)
                             .get(0)
                             .tagName || $(item)
@@ -117,25 +117,25 @@ export function parseUrl(url, callback) {
                             const tag_href = $(item).attr('href');
                             const tag_class = $(item).attr('class');
 
-
                             const tagNode = function (item) {
 
+                                const parseTag = function (tag_node) {
 
-                                const parseTag = function (tag) {
-
-                                    const childList = $(tag)
+                                    var childListObject = {};                                    
+                                    const childList = $(tag_node)
                                         .children()
                                         .toArray();
 
-                                    var childListObject = {};
 
-                                    if (childList.length) {
+                                    if (childList.length > 0) {
                                         
-                                        childList.map((childItem) => {
+                                        childList.map((childItem, idx) => {
                                             
                                             const tag_name = getTagName(childItem);
-                                            const tag_key = parseNodeDetail(tag_name, childItem);
-                                            childListObject[tag_key] = parseTag(childItem);
+                                            const tag_key = parseNodeDetail(tag_name, childItem, idx);
+                                            if (tag_key !== undefined) {
+                                                childListObject[tag_key] = parseTag(childItem);                                                
+                                            }
 
                                            
                                         });
@@ -143,31 +143,16 @@ export function parseUrl(url, callback) {
                                         return childListObject;
 
                                     } else {
-                                        const contentsItem = $(tag).get();
-                                        return $(contentsItem).text();                                            
-                                        
-                                        // if (contentsItem) {
-                                            
-                                        //     const tag_name = getTagName(contentsItem);
-                                        //     const tag_key = parseNodeDetail(tag_name, contentsItem);
-                                        //     childListObject[tag_key] = parseTag(contentsItem);
-                                            
-                                        //     return childListObject;
-                                        // } else {
-                                        //     return $(contentsItem).text();                                            
-                                        // }
-                                        
+
+                                        return $(tag_node).text();                                            
                                     }
                                 };
 
                                 return parseTag(item);
                             };
 
-                            var tagkey = "<" + [tagname] + ((tag_id) ? (" id=\"" + [tag_id]) + "\"" : "") + ((tag_class) ? (" class=\"" + [tag_class] + "\"") : "") + ((tag_href) ? (" href=\"" + [tag_href] + "\"") : "") + ">";
+                            var tagkey = "<" + [tagname] + ((tag_id) ? (" id=\"" + [tag_id]) + "\"" : "") + ((tag_class) ? (" class=\"" + [tag_class] + "\"") : "") + ((tag_href) ? (" href=\"" + [tag_href] + "\"") : "") + " >" + "        " + index ;
                             body[tagkey] = tagNode(item);
-
-                        } else {
-
 
                         }
                     });
@@ -175,6 +160,8 @@ export function parseUrl(url, callback) {
                         head: webparse.head,
                         body
                     };
+                } else {
+
                 }
             }
             callback(webparse);

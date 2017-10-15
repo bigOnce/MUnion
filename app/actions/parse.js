@@ -1,6 +1,7 @@
 import * as types from '../types';
-import {parseService} from '../services';
+import {parseService, newsService} from '../services';
 import {normalize, schema} from 'normalizr';
+import Constants from '../../constant';
 
 export function setParser(parseObject) {
     return {type: types.SET_PARSE_OBJECT, parser: parseObject};
@@ -38,6 +39,28 @@ export function parseURL(url) {
     };
 }
 
+export function setFilter(filter, type, domain, name, url) {
+    return (dispatch) => {
+        if (type && filter && domain) {
+
+            return newsService()
+                .setFilter({filter, type, domain, name, url})
+                .then((res) => {
+                    switch (res.status) {
+                        case Constants.RESPONSE_SUCCESS:
+                            {alert('summit thanh cong');}
+                            break;
+                        default:
+                            {}
+                            break;
+                    }
+                });
+        }
+        return;
+    }
+
+}
+
 export function parseAddDataForm(obj) {
     return (dispatch) => {
         dispatch(setParseDataForm(obj));
@@ -46,5 +69,6 @@ export function parseAddDataForm(obj) {
 
 export default {
     parseURL,
-    parseAddDataForm
+    parseAddDataForm,
+    setFilter
 };

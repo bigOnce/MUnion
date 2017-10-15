@@ -7,77 +7,92 @@ const logger = log4js.getLogger('debug');
 // logger.level = 'debug';
 
 export default function () {
-    Filters.count().exec((err, count) => {
-    if (count > 0) {
-      return;
-    }
+    Filters
+        .count()
+        .exec((err, count) => {
+            if (count > 0) {
+                return;
+            }
 
-    const vnExpress = new Filters({
-        name: 'VnExpress',
-        filterId: 'vnexpress',
-        filter: {
-                    title: {
-                        selector: 'head title'
-                    },
-            
-                    domain: {
-                        selector: 'head link[rel=canonical]',
-                        attr: 'href'
-                    },
-            
-                    logo: {
-                        selector: 'head meta[property="og:image"]',
-                        attr: 'content'
-                    },
-            
-                    description: {
-                        selector: 'head meta[name=description]',
-                        attr: 'content'
-                    },
-            
+            const vnExpress = new Filters({
+                name: 'Báo VnExpress',
+                domain: 'https://vnexpress.net',
+                filter: {
+
                     publisher: {
-                        selector: 'head meta[name="dc.publisher"]',
-                        attr: 'content'
-                    },
-            
-                    keywords: {
-                        selector: 'head meta[name="keywords"]',
-                        attr: 'content'
-                    },
-            
-                    catelogries: {
-                        listItem: 'body nav[id=main_menu] a',
-                        data: {
+                        url: 'https://vnexpress.net',
+                        filter: {
                             title: {
-                                how: x => x.text()
+                                selector: 'head title'
                             },
-                            url: {
+
+                            domain: {
+                                selector: 'head link[rel=canonical]',
                                 attr: 'href'
+                            },
+
+                            logo: {
+                                selector: 'head meta[property="og:image"]',
+                                attr: 'content'
+                            },
+
+                            description: {
+                                selector: 'head meta[name=description]',
+                                attr: 'content'
+                            },
+
+                            publisher: {
+                                selector: 'head meta[name="dc.publisher"]',
+                                attr: 'content'
+                            },
+
+                            keywords: {
+                                selector: 'head meta[name="keywords"]',
+                                attr: 'content'
                             }
                         }
                     },
-            
-                    subcatelogries: {
-                        listItem: 'body section.cat_header div > a',
-                        data: {
-                            title: {
-                                how: x => x.text()
-                            },
-                            url: {
-                                attr: 'href'
+
+                    catelogries: [
+                        {
+                            url: 'https://vnexpress.net',
+                            filter: {
+    
+                                listItem: 'body nav[id=main_menu] a',
+                                data: {
+                                    title: {
+                                        how: "x => x.text()"
+                                    },
+                                    url: {
+                                        attr: 'href'
+                                    }
+                                }
                             }
-                        }
-                    },
-            },
-        type: Constant.PUBLISHER_CODE,
-    });
+                        },
+                        {
+                            url: 'https://vnexpress.net',
+                            filter: {
+                                listItem: 'body section.cat_header div > a',
+                                data: {
+                                    title: {
+                                        how: x => x.text()
+                                    },
+                                    url: {
+                                        attr: 'href'
+                                    }
+                                }
+                            }
+                        },
+                    ],
+                },
+                type: Constant.PUBLISHER_CODE
+            });
 
-
-    Filters.create([vnExpress], (error) => {
-      if (!error) {
-        console.log('===> filter bind success');
-        logger.info('filter.js: Object Filters create success!');
-      }
-    });
-  });
+            Filters.create([vnExpress], (error) => {
+                if (!error) {
+                    console.log('===> Filter bind success');
+                    logger.info('Filter.js: Object Filters create success!');
+                }
+            });
+        });
 }

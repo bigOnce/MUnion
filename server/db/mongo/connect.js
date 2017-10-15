@@ -24,8 +24,8 @@ export default () => {
 
         // feed some dummy data in DB.
         dataTypes();
-        filters();
         newsnode();
+        filters();        
     });
   };
   connect();

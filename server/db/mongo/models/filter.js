@@ -3,9 +3,25 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const filterSchema = new Schema({
+    domain: {
+        type: String,
+        required: true
+    },
     name: String,
-    filterId: String,
-    filter: Object,
+    filter: {
+        publisher: {
+            url: String,
+            filter: Object
+        },
+        catelogries: [{
+            url: String,            
+            filter: Object
+        }],
+        contents: [{
+            url: String,            
+            filter: Object
+        }]
+    },
     type: Number,
     timeCreate: {
         type: 'Date',

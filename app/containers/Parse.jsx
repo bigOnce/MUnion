@@ -6,11 +6,13 @@ import parse from '../actions/parse';
 import ReactDOM from 'react-dom';
 import JSONTree from 'react-json-tree';
 import Form from 'react-jsonschema-form';
+import Constants from '../../constant';
 
 class Parse extends Component {
 
     constructor(props) {
         super(props);
+
         this._handleClickParse = this
             ._handleClickParse
             .bind(this);
@@ -18,14 +20,17 @@ class Parse extends Component {
         this._jschemaOnUpdate = this
             ._jschemaOnUpdate
             .bind(this);
+
     }
 
     _handleClickParse() {
+
+        // get url from ref
         const url = ReactDOM
             .findDOMNode(this.refs.url)
             .value;
 
-        if (url.trim().length > 0) {
+        if (url.trim().length) {
             this
                 .props
                 .parseUrl(url);
@@ -71,56 +76,54 @@ class Parse extends Component {
         const schema = {
             type: 'object',
             title: 'NEWS Tools Develop',
-            "required": ["name", "domain", "catelogries"],
             properties: {
-                catelogries: {
-                    title: 'Catelogry',
-                    type: 'array',
-                    items: {
-                        type: 'object',
-                        properties: {
-                            selector: {
-                                "type": "string"
-                            },
-                            attr: {
-                                "type": "string"
-                            },
-                            opts: {
-                                "type": "string"
-                            },
-                        }
-                    }
-
+                name: {
+                    type: 'string',
+                    title: 'Name'
                 },
-                contents: {
-                    title: 'Content',
-                    type: 'array',
-                    items: {
-                        type: 'object',
-                        properties: {
-                            selector: {
-                                "type": "string"
-                            },
-                            attr: {
-                                "type": "string"
-                            },
-                            opts: {
-                                "type": "string"
-                            },
-                        }
-                    }
+                domain: {
+                    type: 'string',
+                    title: 'Domain',
+                },
+                type: {
+                    type: "number",
+                    title: 'Type',
+                    enum: [
+                        Constants.PUBLISHER_CODE, Constants.CATEGORY_CODE, Constants.ANCHOR_CODE
+                    ],
+                    default: Constants.CATEGORY_CODE,
+                    enumNames: ["Publisher", "Category", "Content"]
+                },
+                filterurl: {
+                    type: 'string',
+                    title: 'Filter url',
+                },
+                filter: {
+                    title: 'Filter object',
+                    type: 'string'
                 }
-            },
-
+            }
         };
 
         const uiSchema = {
             classNames: "jschema-layout",
+            filter: {
+                "ui:widget": "textarea"
+            }
 
         };
 
         const onError = (errors) => alert("I have", errors.length, "errors to fix");
-        const onSubmit = ({formData}) => console.log("yay I'm valid!");
+        const onSubmit = ({formData}) => {
+            const type = formData.type;
+            const filter = JSON.parse(formData.filter);
+            const domain = formData.domain;
+            const name = formData.name;
+            const url = formData.filterurl;
+
+            this.props.setFilter(filter, type, domain, name, url);
+
+        };
 
         return (
             <section className="content">
@@ -216,7 +219,8 @@ Parse.propTypes = {
     parseUrl: PropTypes.func.isRequired,
     parser: PropTypes.object,
     parseData: PropTypes.object.isRequired,
-    parseAddDataForm: PropTypes.func.isRequired
+    parseAddDataForm: PropTypes.func.isRequired,
+    setFilter: PropTypes.func,
 };
 
 function mapStateToProps(state) {
@@ -228,5 +232,6 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
     parseUrl: parse.parseURL,
-    parseAddDataForm: parse.parseAddDataForm
+    parseAddDataForm: parse.parseAddDataForm,
+    setFilter: parse.setFilter,
 })(Parse);

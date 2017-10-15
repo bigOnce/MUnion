@@ -5,7 +5,7 @@ import parse from './parse';
 import scrape from './scrape';
 import sendfile from './sendfile';
 import audionews from './audio_news';
-import * as news from './news';
+import news from './news';
 
 // export {topics, users, general};
 
