@@ -4,6 +4,7 @@
 import passport from 'passport';
 import unsupportedMessage from '../db/unsupportedMessage';
 import {controllers, passport as passportConfig} from '../db';
+import Constant from '../../constant';
 
 const usersController = controllers && controllers.users;
 const topicsController = controllers && controllers.topics;
@@ -68,13 +69,16 @@ export default(app) => {
 
   if (scrapeController) {
     app.post('/api/scrape', scrapeController.scrapeWithFilter);
+    app.get('/api/scrapeall', scrapeController.scrapeDomains);
+    
   } else {
     console.warn(unsupportedMessage('scrape routes'));
   }
 
   if (sendFileController) {
     app.get('/src/mp3', sendFileController.sendMp3File);
-
+    app.get( Constant.SRC_IMAGE_PATH + '/:path', sendFileController.sendImageFile);
+    
   } else {
     console.warn(unsupportedMessage('scrape routes'));
   }

@@ -1,4 +1,4 @@
-import * as parser from '../utils/parser';
+import {parser} from '../utils';
 
 export function parseURL(req, res) {
   const topic = req.body.topic;

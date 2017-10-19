@@ -4,10 +4,6 @@ import constant from '../constant';
 const Schema = mongoose.Schema;
 
 const publisherSchema = new Schema({
-    appId: {
-        type: String,
-        required: true,
-    },
     code: {
         type: String,
         required: true,
@@ -23,16 +19,25 @@ const publisherSchema = new Schema({
     },
     thumbs: [{
         src: String,
-        w: Number,
-        h: Number
-    }]
+        w: {
+            type: Number,
+            default: 512
+        },
+        h: {
+            type: Number,
+            default: 512
+        }
+    }],
+    keywords: {
+        type: String,
+    },
+    domain: String,
+    
 }, {versionKey: false});
 
-publisherSchema.methods.toJSON = function () {
-    const obj = this.toObject();
-    delete obj._id;
-    delete obj.appId;
-    return obj;
-}; // remove _id, appId in result 
+// publisherSchema.methods.toJSON = function () {
+//     const obj = this.toObject();
+//     return obj;
+// }; // remove _id, appId in result 
 
 export default mongoose.model('Publishers', publisherSchema);

@@ -3,7 +3,7 @@ import request from 'request';
 import tinyreq from 'tinyreq';
 import scrapeIt from 'scrape-it';
 
-import * as stringUtil from '../utils/string';
+import {string as stringUtil} from './string';
 
 export function parseUrl(url, callback) {
     if (url) {

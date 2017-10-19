@@ -19,3 +19,9 @@ export function httpfactory(str) {
     }
     return str;
 }
+
+
+export default {
+    isEmpty,
+    startsWith
+}

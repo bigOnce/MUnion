@@ -1,5 +1,5 @@
 import Filters from '../models/filter';
-import Constant from '../constant';
+import Constant from '../../../../constant';
 
 const log4js = require('log4js');
 
@@ -18,7 +18,6 @@ export default function () {
                 name: 'Báo VnExpress',
                 domain: 'https://vnexpress.net',
                 filter: {
-
                     publisher: {
                         url: 'https://vnexpress.net',
                         filter: {
@@ -55,9 +54,9 @@ export default function () {
 
                     catelogries: [
                         {
+                            fid: Constant.CATEGORY_MAIN_ID,
                             url: 'https://vnexpress.net',
                             filter: {
-    
                                 listItem: 'body nav[id=main_menu] a',
                                 data: {
                                     title: {
@@ -69,7 +68,8 @@ export default function () {
                                 }
                             }
                         },
-                        {
+                        {   
+                            fid: Constant.CATEGORY_SUB_1_ID,
                             url: 'https://vnexpress.net',
                             filter: {
                                 listItem: 'body section.cat_header div > a',

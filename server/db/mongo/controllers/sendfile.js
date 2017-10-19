@@ -12,6 +12,13 @@ export function sendMp3File(req, res) {
 
 }
 
+export function sendImageFile(req, res) {
+    const imgPath = req.params.path;
+    console.log(imgPath);
+    res.sendFile(imgPath, {"root": PATHS.imgsrc});
+}
+
 export default {
-    sendMp3File
+    sendMp3File,
+    sendImageFile
 };

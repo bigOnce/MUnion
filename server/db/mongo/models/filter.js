@@ -14,10 +14,12 @@ const filterSchema = new Schema({
             filter: Object
         },
         catelogries: [{
+            fid: String,
             url: String,            
             filter: Object
         }],
         contents: [{
+            fid: String,            
             url: String,            
             filter: Object
         }]

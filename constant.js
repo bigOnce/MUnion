@@ -28,7 +28,7 @@ module.exports = Object.freeze({
   FAILED: 0,
   // ERROR CODE
   RESPONSE_SUCCESS: 200,
-
+  
   ERROR: -1,
   ERROR_BAD_REQUEST: 400,
   ERROR_UNAUTHORIZED: 401,
@@ -43,5 +43,16 @@ module.exports = Object.freeze({
 
   // Define APPS Id
   NEWS_APP_ID: 'vinabao',
+
+
+  // Category ID
+  CATEGORY_MAIN_ID: 'main_category',
+  CATEGORY_SUB_1_ID: 'sub_1_category',
+  CATEGORY_SUB_2_ID: 'sub_2_category',
+  
+  // API PATHS
+  SRC_IMAGE_PATH: '/src/images',
+  SRC_AUDIO_PATH: '/src/mp3'
+  
 
 });
