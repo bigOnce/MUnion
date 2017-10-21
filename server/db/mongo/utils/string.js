@@ -23,5 +23,6 @@ export function httpfactory(str) {
 
 export default {
     isEmpty,
-    startsWith
+    startsWith,
+    httpfactory
 }

@@ -57,18 +57,17 @@ export default function () {
                             fid: Constant.CATEGORY_MAIN_ID,
                             url: 'https://vnexpress.net',
                             filter: {
-                                listItem: 'body nav[id=main_menu] a',
+                                listItem: 'body nav[id=main_menu] > a',
                                 data: {
                                     title: {
-                                        how: "x => x.text()"
+                                        how: x => x.text()
                                     },
                                     url: {
                                         attr: 'href'
                                     }
                                 }
                             }
-                        },
-                        {   
+                        }, {
                             fid: Constant.CATEGORY_SUB_1_ID,
                             url: 'https://vnexpress.net',
                             filter: {
@@ -82,8 +81,8 @@ export default function () {
                                     }
                                 }
                             }
-                        },
-                    ],
+                        }
+                    ]
                 },
                 type: Constant.PUBLISHER_CODE
             });
@@ -94,5 +93,6 @@ export default function () {
                     logger.info('Filter.js: Object Filters create success!');
                 }
             });
+
         });
 }

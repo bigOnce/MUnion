@@ -2,12 +2,12 @@ import cheerio from 'cheerio';
 import request from 'request';
 import tinyreq from 'tinyreq';
 import scrapeIt from 'scrape-it';
-
-import {string as stringUtil} from './string';
+import string from './string';
 
 export function parseUrl(url, callback) {
     if (url) {
-        url = stringUtil.httpfactory(url);
+        url = string.httpfactory(url);
+        
         let webparse = {
             head: {},
             body: {}
@@ -168,3 +168,7 @@ export function parseUrl(url, callback) {
         });
     }
 }
+
+ export default {
+    parseUrl
+ };

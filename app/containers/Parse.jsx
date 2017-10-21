@@ -83,7 +83,7 @@ class Parse extends Component {
                 },
                 domain: {
                     type: 'string',
-                    title: 'Domain',
+                    title: 'Domain'
                 },
                 type: {
                     type: "number",
@@ -96,7 +96,7 @@ class Parse extends Component {
                 },
                 filterurl: {
                     type: 'string',
-                    title: 'Filter url',
+                    title: 'Filter url'
                 },
                 filter: {
                     title: 'Filter object',
@@ -112,16 +112,22 @@ class Parse extends Component {
             }
 
         };
-
         const onError = (errors) => alert("I have", errors.length, "errors to fix");
         const onSubmit = ({formData}) => {
             const type = formData.type;
-            const filter = JSON.parse(formData.filter);
+            const filter = JSON.parse(formData.filter, (key, value) => {
+                if (typeof value === 'string' && value.indexOf('x.text()') > -1) {
+                    return (x => x.text());
+                }
+                return value;
+            });
             const domain = formData.domain;
             const name = formData.name;
             const url = formData.filterurl;
 
-            this.props.setFilter(filter, type, domain, name, url);
+            this
+                .props
+                .setFilter(filter, type, domain, name, url);
 
         };
 
@@ -220,7 +226,7 @@ Parse.propTypes = {
     parser: PropTypes.object,
     parseData: PropTypes.object.isRequired,
     parseAddDataForm: PropTypes.func.isRequired,
-    setFilter: PropTypes.func,
+    setFilter: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -233,5 +239,5 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
     parseUrl: parse.parseURL,
     parseAddDataForm: parse.parseAddDataForm,
-    setFilter: parse.setFilter,
+    setFilter: parse.setFilter
 })(Parse);

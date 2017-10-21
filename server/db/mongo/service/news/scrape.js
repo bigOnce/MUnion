@@ -13,7 +13,6 @@ export function scrapedomain(domain) {
                 }, function (err, result) {
                     if (err) 
                         resolve(err);
-                    
                     if (result) {
                         const {filter, name, type} = result;
                         const {publisher, catelogries, contents} = filter;
@@ -23,19 +22,35 @@ export function scrapedomain(domain) {
                                 .scrape
                                 .scrapeUrl(publisher.url, publisher.filter)
                                 .then((results) => {
-                                    utils
-                                        .factory
-                                        .publisher(results, domain)
-                                        .then((result) => {
-                                            resolve(result);
-                                        });
+                                    // utils
+                                    //     .factory
+                                    //     .publisher(results, domain)
+                                    //     .then((result) => {
+                                    //         resolve(results);
+                                    //     });
+                                    resolve(results);                                    
                                 })
                                 .catch((results) => {
                                     resolve(results);
                                 })
+                        }
 
-                        } else {
-                            resolve(utils.factory.responseMsg('not found publisher filter'));
+                        if (catelogries) {
+                            catelogries.map((filterItem) => {
+                                console.log(filterItem.filter);
+
+                                utils
+                                .scrape
+                                .scrapeUrl(filterItem.url, {[filterItem.fid]: filterItem.filter})
+                                .then((results) => {
+                                    console.log(results);
+                                    resolve(results);                                
+                                })
+                                .catch((results) => {
+                                    resolve(results);
+                                })
+                            })
+                            
                         }
 
                     } else {

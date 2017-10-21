@@ -1,10 +1,10 @@
-import {parser} from '../utils';
+import utils from '../utils';
 
 export function parseURL(req, res) {
   const topic = req.body.topic;
   const url = topic.url;
   if (url) {
-    parser.parseUrl(url, (data) => {
+    utils.parser.parseUrl(url, (data) => {
       res
         .status(200)
         .json({url: topic.url, data});

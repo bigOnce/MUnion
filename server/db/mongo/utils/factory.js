@@ -22,7 +22,10 @@ export function publisher(publisher, domain) {
       newPublisher.title = title;
     }
 
+    // logo
     if (logo) {
+
+      // Process image
       Jimp
         .read(logo, function (err, img) {
           if (err) 
@@ -30,6 +33,8 @@ export function publisher(publisher, domain) {
           
           const img_name = hostName + '_logo.jpg';
           const img_path = "./src/images/" + img_name;
+
+          // scale image
           img
             .resize(512, 512)
             .quality(60)
@@ -41,11 +46,20 @@ export function publisher(publisher, domain) {
               src: Constant.SRC_IMAGE_PATH + '/' + img_name
             });
 
-          resolve(newPublisher);
+          //save in data
+          newPublisher.save((err) => {
+            if (err) 
+              resolve(responseMsg('Publisher create error'));
+            else 
+              resolve(responseMsg('Publisher create success'));
+            }
+          );
 
+          
         });
+
     } else {
-      resolve(newPublisher);
+      resolve(responseMsg('Publisher create success'));
     }
 
   });

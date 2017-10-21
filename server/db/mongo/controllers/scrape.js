@@ -51,7 +51,7 @@ export function scrapeDomains(req, res) {
 
     Promise.all([
         Scrape.scrapedomain('http://gamek.vn'),
-        Scrape.scrapedomain('https://vnexpress.net')
+        Scrape.scrapedomain('https://vnexpress.net'),
     ]).then((results) => {
         res.status(Constant.RESPONSE_SUCCESS).json(results);
     }).catch((results) => {

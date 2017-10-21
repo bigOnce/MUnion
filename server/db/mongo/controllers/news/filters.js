@@ -23,16 +23,17 @@ export function setFilter(req, res) {
                     case Constant.CATEGORY_CODE:
                         {
                             const listCatelogries = rs.filter.catelogries;
+                            console.log(typeof(filter));
                             filter.map((f_item, f_index) => {
-                                isUpdate = false;                                
-                                var hasf_Item = listCatelogries.some((item) => { 
+                                isUpdate = false;
+                                var hasf_Item = listCatelogries.some((item) => {
                                     return item.fid === f_item.fid;
                                 });
 
                                 if (hasf_Item) {
                                     listCatelogries.map(item => {
                                         if (item.fid === f_item.fid) {
-                                            item.filter = f_item;
+                                            item.filter = f_item.filter;
                                         }
                                     })
                                 } else {
@@ -42,7 +43,8 @@ export function setFilter(req, res) {
 
                         }
                         break;
-                        case Constant.ANCHOR_CODE : {
+                    case Constant.ANCHOR_CODE:
+                        {
                             var isUpdate = false;
                             const listContents = rs.filter.contents;
                             listContents.map((item, index) => {
@@ -56,63 +58,64 @@ export function setFilter(req, res) {
                             }
                         }
                         break;
-                        default : break;}
-                    newFilter = rs;
-                } else {
-                    switch (type) {
-                        case Constant.PUBLISHER_CODE:
-                            {
-                                newFilter = new Filters({
-                                    name,
-                                    domain,
-                                    filter: {
-                                        publisher: {
-                                            url: url,
-                                            filter: filter
-                                        }
-                                    },
-                                    type
-                                });
-
-                            }
-                            break;
-
-                        case Constant.CATEGORY_CODE:
-                            {
-                                newFilter = new Filters({
-                                    name,
-                                    domain,
-                                    filter: {
-                                        catelogries: filter
-                                    },
-                                    type
-                                });
-
-                            }
-                            break;
-                        case Constant.ANCHOR_CODE:
-                            {
-                                newFilter = new Filters({
-                                    name,
-                                    domain,
-                                    filter: {
-                                        contents: filter
-                                    },
-                                    type
-                                });
-
-                            }
-                            break;
-                        default:
-                            break;
-                    }
+                    default:
+                        break;
                 }
+                newFilter = rs;
+            } else {
+                switch (type) {
+                    case Constant.PUBLISHER_CODE:
+                        {
+                            newFilter = new Filters({
+                                name,
+                                domain,
+                                filter: {
+                                    publisher: {
+                                        url: url,
+                                        filter: filter
+                                    }
+                                },
+                                type
+                            });
 
-                newFilter.save((err, filterUpdate, numAffected) => {
-                    if (err) 
-                        return handleError(err);
-                    res.send(filterUpdate);
-                });
+                        }
+                        break;
+
+                    case Constant.CATEGORY_CODE:
+                        {
+                            newFilter = new Filters({
+                                name,
+                                domain,
+                                filter: {
+                                    catelogries: filter
+                                },
+                                type
+                            });
+                        }
+                        break;
+                    case Constant.ANCHOR_CODE:
+                        {
+                            newFilter = new Filters({
+                                name,
+                                domain,
+                                filter: {
+                                    contents: filter
+                                },
+                                type
+                            });
+
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            newFilter.save((err, filterUpdate, numAffected) => {
+                if (err) 
+                    return handleError(err);
+                res.send(filterUpdate);
+            });
         })
 
     } else {

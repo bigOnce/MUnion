@@ -46,9 +46,9 @@ module.exports = Object.freeze({
 
 
   // Category ID
-  CATEGORY_MAIN_ID: 'main_category',
-  CATEGORY_SUB_1_ID: 'sub_1_category',
-  CATEGORY_SUB_2_ID: 'sub_2_category',
+  CATEGORY_MAIN_ID: 'categories',
+  CATEGORY_SUB_1_ID: 'sub_categories',
+  CATEGORY_SUB_2_ID: 'sub_categories_2',
   
   // API PATHS
   SRC_IMAGE_PATH: '/src/images',
