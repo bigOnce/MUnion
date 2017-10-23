@@ -13,56 +13,107 @@ export function publisher(publisher, domain) {
     const {keywords, description, title, logo} = publisher;
     var hostName = Url.getHostName(domain);
 
-    var newPublisher = new Publishers({code: hostName, type: Constant.PUBLISHER_CODE});
-    if (keywords) {
-      newPublisher.keywords = keywords;
-    }
+    if (hostName.length) {
+      Publishers.findOne({
+        code: hostName
+      }, (err, rs) => {
+        if (err) {
+          resolve(responseMsg('Publisher finde error with hostname ' + hostName));
+        }
 
-    if (title) {
-      newPublisher.title = title;
-    }
+        if (!rs) {
+          var newPublisher = new Publishers({code: hostName, type: Constant.PUBLISHER_CODE});
 
-    // logo
-    if (logo) {
+          if (keywords) {
+            newPublisher.keywords = keywords;
+          }
 
-      // Process image
-      Jimp
-        .read(logo, function (err, img) {
-          if (err) 
-            throw err;
-          
-          const img_name = hostName + '_logo.jpg';
-          const img_path = "./src/images/" + img_name;
+          if (title) {
+            newPublisher.title = title;
+          }
 
-          // scale image
-          img
-            .resize(512, 512)
-            .quality(60)
-            .write(img_path);
+          // logo
+          if (logo) {
 
-          newPublisher
-            .thumbs
-            .push({
-              src: Constant.SRC_IMAGE_PATH + '/' + img_name
-            });
+            // Process image
+            Jimp
+              .read(logo, function (err, img) {
+                if (err) 
+                  throw err;
+                
+                const img_name = hostName + '_logo.jpg';
+                const img_path = "./src/images/" + img_name;
 
-          //save in data
-          newPublisher.save((err) => {
-            if (err) 
-              resolve(responseMsg('Publisher create error'));
-            else 
-              resolve(responseMsg('Publisher create success'));
-            }
-          );
+                // scale image
+                img
+                  .resize(512, 512)
+                  .quality(60)
+                  .write(img_path);
 
-          
-        });
+                newPublisher
+                  .thumbs
+                  .push({
+                    src: Constant.SRC_IMAGE_PATH + '/' + img_name
+                  });
+
+                //save in data
+                newPublisher.save((err) => {
+                  if (err) 
+                    resolve(responseMsg('Publisher create error'));
+                  else 
+                    resolve(responseMsg('Publisher create success'));
+                  }
+                );
+
+              });
+            // end process image
+
+          } else {
+
+            // if !logo
+            newPublisher.save((err) => {
+              if (err) 
+                resolve(responseMsg('Publisher create error'));
+              else 
+                resolve(responseMsg('Publisher create success'));
+              }
+            );
+
+          }
+
+
+        } else {
+          // if found publisher for hoasname
+          resolve(rs);
+        }
+
+      });
+
 
     } else {
-      resolve(responseMsg('Publisher create success'));
+      // hostname incorrect
+      resolve(responseMsg('Domain incorrect !!!'));
     }
 
+
   });
+
+}
+
+export function catelogry(category, domain) {
+
+  console.log(category);
+  var hostName = Url.getHostName(domain);
+  if (hostName) {
+    resolve(responseMsg('hahaha'));
+    
+
+  } else {
+
+    // not found host name
+    resolve(responseMsg('No hostname found!!!'));
+    
+  }
 
 }
 
@@ -102,6 +153,7 @@ export function categoryCreate() {}
 
 export default {
   publisher,
+  catelogry,
   responseMsg,
   responseError,
   responseFail

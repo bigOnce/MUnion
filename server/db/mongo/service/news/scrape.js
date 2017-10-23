@@ -14,6 +14,7 @@ export function scrapedomain(domain) {
                     if (err) 
                         resolve(err);
                     if (result) {
+                        
                         const {filter, name, type} = result;
                         const {publisher, catelogries, contents} = filter;
 
@@ -22,13 +23,12 @@ export function scrapedomain(domain) {
                                 .scrape
                                 .scrapeUrl(publisher.url, publisher.filter)
                                 .then((results) => {
-                                    // utils
-                                    //     .factory
-                                    //     .publisher(results, domain)
-                                    //     .then((result) => {
-                                    //         resolve(results);
-                                    //     });
-                                    resolve(results);                                    
+                                    utils
+                                        .factory
+                                        .publisher(results, domain)
+                                        .then((result) => {
+                                            resolve(results);
+                                        });
                                 })
                                 .catch((results) => {
                                     resolve(results);
@@ -37,20 +37,24 @@ export function scrapedomain(domain) {
 
                         if (catelogries) {
                             catelogries.map((filterItem) => {
-                                console.log(filterItem.filter);
-
                                 utils
-                                .scrape
-                                .scrapeUrl(filterItem.url, {[filterItem.fid]: filterItem.filter})
-                                .then((results) => {
-                                    console.log(results);
-                                    resolve(results);                                
-                                })
-                                .catch((results) => {
-                                    resolve(results);
-                                })
+                                    .scrape
+                                    .scrapeUrl(filterItem.url, {
+                                        [filterItem.fid]: filterItem.filter
+                                    })
+                                    .then((results) => {
+                                        utils
+                                            .factory
+                                            .catelogry(results, domain)
+                                            .then((result) => {
+                                                resolve(results);
+                                            });
+                                    })
+                                    .catch((results) => {
+                                        resolve(results);
+                                    })
                             })
-                            
+
                         }
 
                     } else {

@@ -50,8 +50,11 @@ export function scrapeWithFilter(req, res) {
 export function scrapeDomains(req, res) {
 
     Promise.all([
+
         Scrape.scrapedomain('http://gamek.vn'),
         Scrape.scrapedomain('https://vnexpress.net'),
+        Scrape.scrapedomain('http://www.24h.com.vn'),
+
     ]).then((results) => {
         res.status(Constant.RESPONSE_SUCCESS).json(results);
     }).catch((results) => {
