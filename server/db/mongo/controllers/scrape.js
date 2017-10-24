@@ -4,7 +4,6 @@ import Constant from '../../../../constant';
 import Scrape from '../service/news/scrape';
 var Promise = require('promise');
 
-
 /**
  * scrape url with htmltag{class, id}
  * @param {url, filter} req
@@ -29,12 +28,12 @@ export function scrapeWithFilter(req, res) {
                 scrape.scrape(url, filter, (err, rs) => {
                     if (err != Constant.ERROR) {
                         res
-                        .status(200)
-                        .json(rs);
+                            .status(200)
+                            .json(rs);
                     } else {
                         res
-                        .status(500)
-                        .send('error');
+                            .status(500)
+                            .send('error');
                     }
                 });
 
@@ -49,19 +48,21 @@ export function scrapeWithFilter(req, res) {
 
 export function scrapeDomains(req, res) {
 
-    Promise.all([
+    Promise
+        .all([// Scrape.scrapedomain('http://gamek.vn'),
+        // Scrape.scrapedomain('http://www.24h.com.vn'),
+        Scrape.scrapedomain('https://vnexpress.net')])
+        .then((results) => {
+            res
+                .status(Constant.RESPONSE_SUCCESS)
+                .json(results);
+        })
+        .catch((results) => {
+            res
+                .status(Constant.ERROR_BAD_REQUEST)
+                .json(results);
+        });
 
-        Scrape.scrapedomain('http://gamek.vn'),
-        Scrape.scrapedomain('https://vnexpress.net'),
-        Scrape.scrapedomain('http://www.24h.com.vn'),
-
-    ]).then((results) => {
-        res.status(Constant.RESPONSE_SUCCESS).json(results);
-    }).catch((results) => {
-        res.status(Constant.ERROR_BAD_REQUEST).json(results);
-    });
-    
-  
 }
 
 export default {

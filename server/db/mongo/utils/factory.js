@@ -3,6 +3,7 @@ import Filters from '../models/filter';
 import Constant from '../../../../constant';
 import Publishers from '../models/publisher';
 import Url from './url';
+import StringUtils from './string';
 
 var Jimp = require("jimp");
 var Promise = require('promise');
@@ -81,7 +82,6 @@ export function publisher(publisher, domain) {
 
           }
 
-
         } else {
           // if found publisher for hoasname
           resolve(rs);
@@ -89,12 +89,10 @@ export function publisher(publisher, domain) {
 
       });
 
-
     } else {
       // hostname incorrect
       resolve(responseMsg('Domain incorrect !!!'));
     }
-
 
   });
 
@@ -102,17 +100,46 @@ export function publisher(publisher, domain) {
 
 export function catelogry(category, domain) {
 
-  console.log(category);
   var hostName = Url.getHostName(domain);
-  if (hostName) {
+  const {categories, sub_categories} = category;
+  var isSubCategories = false;
+  var listItems = [];
+  console.log(categories);
+  console.log(sub_categories);
+
+  // set truong main categories
+  if (categories.size) {
+    console.log('aaaa');
+    listItems = categories;
+  }
+
+  // set truong hop sub categorires
+  if (sub_categories.size) {
+    console.log('hahaha');
+    listItems = sub_categories;
+    isSubCategories = true;
+  }
+  console.log(listItems);
+  if (hostName.length && listItems.size) {
+    listItems.map((item, index) => {
+
+      const {title, url} = item;
+      if (title.length || url === "/") {
+        console.log(item);
+      } else {
+        var newUrl = StringUtils.urlComplete(url, domain);
+        console.log(newUrl);
+      }
+
+    })
+
     resolve(responseMsg('hahaha'));
-    
 
   } else {
 
     // not found host name
     resolve(responseMsg('No hostname found!!!'));
-    
+
   }
 
 }
