@@ -17,8 +17,11 @@ module.exports = Object.freeze({
   AUDIO_CODE: 32,
   PUBLISHER_CODE: 10,
   CATEGORY_CODE: 11,
+  SUB_1_CATEGORY_CODE: 111,
+  SUB_2_CATEGORY_CODE: 112,
   TOPIC_CODE: 12,
   ANCHOR_CODE: 20,
+  CONTAINERS_CODE: 14,
   ARTICLE_CODE: 30,
   NAVIGATOR_MENU_CODE: 50,
   NAVIGATOR_NEXT_CODE: 51,
@@ -28,7 +31,7 @@ module.exports = Object.freeze({
   FAILED: 0,
   // ERROR CODE
   RESPONSE_SUCCESS: 200,
-  
+
   ERROR: -1,
   ERROR_BAD_REQUEST: 400,
   ERROR_UNAUTHORIZED: 401,
@@ -40,19 +43,16 @@ module.exports = Object.freeze({
   ERROR_REQUEST_TIME_OUT: 408,
   ERROR_BAD_GATEWAY: 502,
 
-
   // Define APPS Id
   NEWS_APP_ID: 'vinabao',
-
 
   // Category ID
   CATEGORY_MAIN_ID: 'categories',
   CATEGORY_SUB_1_ID: 'sub_categories',
   CATEGORY_SUB_2_ID: 'sub_categories_2',
-  
+
   // API PATHS
   SRC_IMAGE_PATH: '/src/images',
   SRC_AUDIO_PATH: '/src/mp3'
-  
 
 });

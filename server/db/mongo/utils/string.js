@@ -15,7 +15,8 @@ export function startWith(str, word) {
 }
 
 export function endWith(str, word) {
-    return str.indexOf(word) === (str.length - word.length);
+    var lastWord = str.substr(-1, 1);
+    return (lastWord === word);
 }
 
 export function httpfactory(str) {
@@ -28,19 +29,29 @@ export function httpfactory(str) {
 export function urlComplete(url, domain) {
 
     if (this.startWith(url, 'http') || this.startWith(url, 'https')) {
+        if (this.endWith(url, '/')) {
+            return url.substr(0, url.length - 1);
+        }
         return url;
     }
-    var result = '';
+    var result = null;
     if (this.endWith(domain, '/')) {
         result = domain.substr(0, 1);
-    } else 
+    } else {
         result = domain;
-    
-    if (this.startWith(url, '/')) {
+    }
+
+    if (this.startWith(url, '//')) {
+        result += url.substr(0, 1);
+    } else if (this.startWith(url, '/')) {
         result += url;
     } else 
         result += '/' + url;
     
+    if (this.endWith(result, '/')) {
+        return result.substr(0, result.length - 1);
+    }
+
     return result;
 }
 
@@ -48,5 +59,6 @@ export default {
     isEmpty,
     startWith,
     httpfactory,
-    urlComplete
+    urlComplete,
+    endWith
 }

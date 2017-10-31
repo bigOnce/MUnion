@@ -5,20 +5,21 @@ const Schema = mongoose.Schema;
 
 const catelogrySchema = new Schema({
 
-    code: {
-        type: String,
-        required: true,
-    },
+    code: String,
     title: {
         type: String,
         default: 'Define name for catelogry'
     },
     type: {
         type: Number,
-        default: constant.PUBLISHER_CODE,
+        default: constant.CATEGORY_CODE,
         required: true
     },
     domain: String,
+    source: {
+        type: String,
+        required: true
+    }
 
 }, {versionKey: false});
 

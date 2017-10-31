@@ -89,10 +89,12 @@ class Parse extends Component {
                     type: "number",
                     title: 'Type',
                     enum: [
-                        Constants.PUBLISHER_CODE, Constants.CATEGORY_CODE, Constants.ANCHOR_CODE
+                        Constants.PUBLISHER_CODE, Constants.CATEGORY_CODE, Constants.ANCHOR_CODE, Constants.CONTAINERS_CODE
                     ],
-                    default: Constants.CATEGORY_CODE,
-                    enumNames: ["Publisher", "Category", "Content"]
+                    enumNames: [
+                        "Publisher", "Category", "Contents", "Containers"
+                    ],
+                    default: Constants.CATEGORY_CODE
                 },
                 filterurl: {
                     type: 'string',

@@ -3,66 +3,82 @@ import Constant from '../../../../../constant';
 
 export function setFilter(req, res) {
 
-    const {filter, type, domain, name, url} = req.body.set;
+    const {
+        rs,
+        type,
+        domain,
+        name,
+        url,
+        filter
+    } = req.body.set; // GET PARAMS IN REQUEST
     if (filter && type && domain) {
         var newFilter = {};
+        // FIND FILTER FOR DOMAIN
         Filters.findOne({
             domain: domain
-        }, function (err, rs) {
+        }, function (err, object) {
+
             if (err) 
-                return handleError(err);
-            if (rs) {
+                throw err;
+            
+            if (object) {
+
+                var {publisher, catelogries, contents, containers} = object.filter;
                 switch (type) {
                     case Constant.PUBLISHER_CODE:
                         {
-                            rs.filter.publisher.filter = filter;
-                            rs.filter.publisher.url = url;
+                            if (publisher === undefined) {
+                                publisher = {};
+                            }
+                            publisher.filter = filter;
+                            publisher.url = url;
+                            object.filter.publisher = publisher;
                         }
                         break;
-
                     case Constant.CATEGORY_CODE:
                         {
-                            const listCatelogries = rs.filter.catelogries;
-                            console.log(typeof(filter));
+                            if (catelogries === undefined) {
+                                catelogries = [];
+                            }
                             filter.map((f_item, f_index) => {
-                                isUpdate = false;
-                                var hasf_Item = listCatelogries.some((item) => {
+                                var hasf_Item = catelogries.some((item) => {
                                     return item.fid === f_item.fid;
                                 });
 
                                 if (hasf_Item) {
-                                    listCatelogries.map(item => {
+                                    catelogries.map(item => {
                                         if (item.fid === f_item.fid) {
                                             item.filter = f_item.filter;
                                         }
                                     })
                                 } else {
-                                    listCatelogries.push(f_item);
+                                    catelogries.push(f_item);
                                 }
                             });
 
                         }
                         break;
                     case Constant.ANCHOR_CODE:
+                        {}
+                        break;
+                    case Constant.CONTAINERS_CODE:
                         {
-                            var isUpdate = false;
-                            const listContents = rs.filter.contents;
-                            listContents.map((item, index) => {
-                                if (item.url === url) {
-                                    item.filter = filter;
-                                    isUpdate = true;
-                                }
-                            });
-                            if (!isUpdate) {
-                                listContents.push({url: url, filter: filter});
+                            containers = containers || {};
+                            var {catelogries} = filter;
+                            if (catelogries !== undefined) {
+                                containers
+                                    .catelogries
+                                    .push({url, filter: catelogries});
                             }
+
                         }
                         break;
                     default:
                         break;
                 }
-                newFilter = rs;
+                newFilter = object;
             } else {
+                // NOT IS EXIST A FILTER WITH DOMAIN - CREATE NEW
                 switch (type) {
                     case Constant.PUBLISHER_CODE:
                         {
@@ -93,13 +109,16 @@ export function setFilter(req, res) {
                             });
                         }
                         break;
-                    case Constant.ANCHOR_CODE:
+                    case Constant.CONTAINERS_CODE:
                         {
+                            var {catelogries} = filter;
                             newFilter = new Filters({
                                 name,
                                 domain,
                                 filter: {
-                                    contents: filter
+                                    containers: {
+                                        catelogries: catelogries || {}
+                                    }
                                 },
                                 type
                             });
@@ -122,7 +141,7 @@ export function setFilter(req, res) {
 
         res
             .status(Constant.ERROR_BAD_REQUEST)
-            .send('Params in correct!');
+            .send('Params {filter, type, domain} incorrect! Please check request');
     }
 }
 

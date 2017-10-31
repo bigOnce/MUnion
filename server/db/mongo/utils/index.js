@@ -1,5 +1,5 @@
 import factory from './factory';
-import url from './url';
+import url from './urls';
 import scrape from './scrape';
 import string from './string';
 import parser from './parser';

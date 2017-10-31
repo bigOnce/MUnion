@@ -93,6 +93,5 @@ export default function () {
                     logger.info('Filter.js: Object Filters create success!');
                 }
             });
-
         });
 }

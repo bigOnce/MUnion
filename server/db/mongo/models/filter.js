@@ -13,16 +13,28 @@ const filterSchema = new Schema({
             url: String,
             filter: Object
         },
-        catelogries: [{
-            fid: String,
-            url: String,            
-            filter: Object
-        }],
-        contents: [{
-            fid: String,            
-            url: String,            
-            filter: Object
-        }]
+        catelogries: [
+            {
+                fid: String,
+                url: String,
+                filter: Object
+            }
+        ],
+        contents: [
+            {
+                fid: String,
+                url: String,
+                filter: Object
+            }
+        ],
+        containers: {
+            catelogries: [
+                {
+                    url: String,
+                    filter: Object
+                }
+            ]
+        }
     },
     type: Number,
     timeCreate: {
