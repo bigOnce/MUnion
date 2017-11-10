@@ -78,3 +78,6 @@
 [2017-10-31 12:02:38.121] [INFO] debug - datatype.js: Object NodeType create success!
 [2017-10-31 12:02:38.124] [INFO] debug - Filter.js: Object Filters create success!
 [2017-10-31 12:02:38.125] [INFO] debug - news_node.js: Object NewsNode create success!
+[2017-11-01 17:46:58.223] [INFO] debug - news_node.js: Object NewsNode create success!
+[2017-11-01 17:46:58.225] [INFO] debug - datatype.js: Object NodeType create success!
+[2017-11-01 17:46:58.226] [INFO] debug - Filter.js: Object Filters create success!

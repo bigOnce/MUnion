@@ -25,11 +25,6 @@ export default function () {
                                 selector: 'head title'
                             },
 
-                            domain: {
-                                selector: 'head link[rel=canonical]',
-                                attr: 'href'
-                            },
-
                             logo: {
                                 selector: 'head meta[property="og:image"]',
                                 attr: 'content'
@@ -52,7 +47,7 @@ export default function () {
                         }
                     },
 
-                    catelogries: [
+                    categories: [
                         {
                             fid: Constant.CATEGORY_MAIN_ID,
                             url: 'https://vnexpress.net',

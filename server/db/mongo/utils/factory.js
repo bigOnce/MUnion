@@ -1,10 +1,12 @@
 import scrape from './scrape';
 import Filters from '../models/filter';
-import Catelogry from '../models/catelogry';
+import NewsNode from '../models/newsnode';
 import Constant from '../../../../constant';
-import Publishers from '../models/publisher';
-import Url from './urls';
-import StringUtils from './string';
+import urlUtil from './urls';
+import imageUtil from './image';
+import stringUtil from './string';
+import Thumb from '../models/thumb';
+import {Category, Publisher, NewsItem, Content} from '../models/news';
 
 var Jimp = require("jimp");
 var Promise = require('promise');
@@ -12,14 +14,14 @@ var Promise = require('promise');
 export function publisher(publisher, domain) {
   return new Promise(function (resolve, reject) {
 
-    // GET ALL OBJECT  OF PUBLISHER
+    // GET ALL OBJECT  OF PUBLISHER FILTER
     const {keywords, description, title, logo} = publisher;
     // GET HOSTNAME FROM DOMAIN
-    var hostName = Url.getHostName(domain);
+    var hostName = urlUtil.getHostName(domain);
     // IF IS EXIST DOMAIN
-    if (hostName.length) {
+    if (hostName !== undefined && hostName.length) {
 
-      Publishers.find({
+      Publisher.find({
         code: hostName
       }, (err, pub) => {
 
@@ -27,72 +29,62 @@ export function publisher(publisher, domain) {
           throw err;
         }
 
+        const processPublisher = (pub) => {
+          pub.save((err) => {
+            if (err) 
+              throw err;
+            resolve(pub);
+          });
+        }
+
         if (pub === undefined || pub.length <= 0) {
-          var newPublisher = new Publishers({code: hostName, type: Constant.PUBLISHER_CODE});
+          var newPublisher = new Publisher({code: hostName, type: Constant.PUBLISHER_CODE});
+
           // SET KEYWORDS
           if (keywords) {
             newPublisher.keywords = keywords;
           }
+
           // SET TITLE
           if (title) {
             newPublisher.title = title;
           }
+
+          // SET DOMAIN
+          newPublisher.domain = domain;
+
           // SET LOGO
           if (logo) {
-
-            // PROCESS LOGO IMAGE
-            Jimp
-              .read(logo, function (err, img) {
-                if (err) 
-                  throw err;
-                
-                const img_name = hostName + '_logo.jpg';
-                const img_path = "./src/images/" + img_name;
-
-                // SCALE IMAGHE
-                img
-                  .resize(512, 512)
-                  .quality(60)
-                  .write(img_path);
-
+            imageUtil
+              .scaleAndCacheImageFromUrl(logo, Constant.IMG_SCALE_TYPE_WIDTH, 150)
+              .then((thumb) => {
                 newPublisher
                   .thumbs
-                  .push({
-                    src: Constant.SRC_IMAGE_PATH + '/' + img_name
-                  });
-                // SAVE TO DATABASE
-                newPublisher.save((err) => {
-                  if (err) 
-                    throw err;
-                  resolve(newPublisher);
-                });
+                  .push(thumb);
+                processPublisher(newPublisher);
               });
+
             // END PROCESS IMAGE
           } else {
 
             // IF NOT ISEXIST LOGO - SAVE DATABASE
-            newPublisher.save((err) => {
-              if (err) 
-                throw err;
-              resolve(newPublisher);
-
-            });
+            processPublisher(newPublisher);
 
           }
         } else 
-          resolve(pub);
-        }
-      );
+          console.log(pub);
+        resolve(pub);
+      });
     }
   });
 }
 
 // FACTORY CREATE CATELOGRY
-export function catelogry(category, domain) {
+export function category(category, domain) {
   return new Promise(function (resolve, reject) {
 
     console.time("catelogry_db_save");
-    var hostName = Url.getHostName(domain); // GET HOST NAME
+    var hostName = urlUtil.getHostName(domain); // GET HOST NAME
     var {categories, sub_categories} = category; // GET CATELOGRY LIST AND SUBCATELOGRY LIST
 
     const returnCallback = ((resultList) => {
@@ -115,31 +107,36 @@ export function catelogry(category, domain) {
           // CHECK TITLE AND URL FOR HOME PAGE
           if (url === "/" || url === undefined) {
             // PARSE HOME PAGE
-            catelogrySave(domain, domain, 'Trang Chủ', index, Constant.CATEGORY_CODE).then((rs) => {
+            catelogrySave(domain, domain, 'Trang Chủ', index, Constant.CATEGORY_CODE, hostName).then((rs) => {
               catelogriesTempList.push(rs);
-              if (index === categoriesCount) {
+              categoriesCount --;
+              if (0 === categoriesCount) {
                 returnCallback(catelogriesTempList);
               }
             }).catch((rs) => {
               catelogriesTempList.push(rs);
+              categoriesCount --;
               if (index === categoriesCount) {
                 returnCallback(catelogriesTempList);
               }
             });
           } else {
             // FOTMAR URL
-            var newUrl = StringUtils.urlComplete(url, domain);
+            var newUrl = stringUtil.urlComplete(url, domain);
             // REMOVE CASE HOME PAGE
             if (newUrl !== domain) {
               // CREATE CATELOGRY WITH NEW URL
-              catelogrySave(newUrl, domain, title, index, Constant.CATEGORY_CODE).then((rs) => {
+              catelogrySave(newUrl, domain, title, index, Constant.CATEGORY_CODE, hostName).then((rs) => {
+                
                 catelogriesTempList.push(rs);
-                if (index === categoriesCount) {
+                categoriesCount --;
+                if (0 === categoriesCount) {
                   returnCallback(catelogriesTempList);
                 }
               }).catch((rs) => {
                 catelogriesTempList.push(rs);
-                if (index === categoriesCount) {
+                categoriesCount --;
+                if (0 === categoriesCount) {
                   returnCallback(catelogriesTempList);
                 }
               });
@@ -159,22 +156,29 @@ export function catelogry(category, domain) {
 
       if (sub_categories !== undefined && sub_categories.length > 0) {
         var sub_catelogriesTempList = [];
-        const subcategoriesCount = sub_categories.length - 1;
+        var subcategoriesCount = sub_categories.length - 1;
         sub_categories.map((item, index) => {
+
           const {title, url} = item;
-          if (title.trim().length && url !== "/") {
-            var newUrl = StringUtils.urlComplete(url, domain);
+          console.log(title);
+          console.log(url);
+
+          if (title !== undefined && url !== undefined) {
+            var newUrl = stringUtil.urlComplete(url, domain);
+            console.log(newUrl);
             // REMOVE CASE HOME PAGE
             if (newUrl !== domain) {
               // SUB CATELOGRY SAVEl
-              catelogrySave(newUrl, domain, title, index, Constant.CATEGORY_CODE).then((rs) => {
+              catelogrySave(newUrl, domain, title, index, Constant.SUB_1_CATEGORY_CODE, hostName).then((rs) => {
                 sub_catelogriesTempList.push(rs);
-                if (index === subcategoriesCount) {
+                subcategoriesCount--;
+                if (0 === subcategoriesCount) {
                   returnCallback(sub_catelogriesTempList);
                 }
               }).catch((rs) => {
                 sub_catelogriesTempList.push(rs);
-                if (index === subcategoriesCount) {
+                subcategoriesCount--;
+                if (0 === subcategoriesCount) {
                   returnCallback(sub_catelogriesTempList);
                 }
               });
@@ -195,10 +199,10 @@ export function catelogry(category, domain) {
 }
 
 // CATELOGRY SAVE DATABASE
-export function catelogrySave(url, domain, title, index, type) {
+export function catelogrySave(url, domain, title, index, type, hostname) {
   return new Promise(function (resolve, reject) {
     // CHECK IN DATABASE IS EXIST CATELOGRY WITH URL
-    Catelogry.find({
+    Category.find({
       source: url // FIND A OBJECTIVE WITH URL
     }, (err, object) => {
       // SAVE DB ERROR
@@ -208,10 +212,10 @@ export function catelogrySave(url, domain, title, index, type) {
       // IF IS  NOT EXIST CATELOGRY
       if (object === undefined || object.length <= 0) {
         // CREATE NEW CATELOGRY
-        var newCatelogry = new Catelogry({source: url, type: type}); // INT CATELOGRY
+        var newCatelogry = new Category({source: url, type: type}); // INT CATELOGRY
         newCatelogry.domain = domain; // SET DOMAIN
         newCatelogry.title = title; // SET TITLE
-        newCatelogry.code = 'C-' + index; // CREATE CODE INDEX
+        newCatelogry.code = hostname; // CREATE CODE INDEX
         // SAVE CATELOGRY TO DATABASE
         newCatelogry.save((err, object) => {
           if (err) {
@@ -226,6 +230,87 @@ export function catelogrySave(url, domain, title, index, type) {
       // END SAVE CATELOGRY
     });
     // END PROCESS
+  });
+}
+
+// CATELOGRY CONTAINERS PARSE
+export function containers(container, domain, url) {
+  return new Promise(function (resolve, reject) {
+    if (container !== undefined && domain !== undefined && url !== undefined) {
+      container.map((item, index) => {
+        const {
+          related,
+          thumb_image,
+          thumb_video,
+          description,
+          comment,
+          url,
+          title
+        } = item;
+
+        NewsItem.findOne({
+          source: url
+        }, (err, object) => {
+
+          if (err) 
+            throw err;
+          
+          if (object !== undefined) {
+            // ISEXIST OBJECT WITH URL IN DB
+            resolve(object);
+          } else {
+            // NOT EXIST OBJECT WITH URL IN DB FUNCTION PROCESS NEWS ITEM
+            const processNewsNode = ((item) => {
+              item.save((err, object) => {
+                if (err) {
+                  throw err;
+                }
+                resolve(object);
+              });
+            });
+
+            var newsItem = new NewsItem({source: url});
+            newsItem.title = title;
+            newsItem.code = stringUtil.generalCodeForUrl(url);
+            newsItem.type = Constant.ANCHOR_CODE;
+            newsItem.content = description;
+            newsItem.comments = comment;
+            newsItem.domain = domain;
+
+            // THUMB IMAGE
+            if (thumb_image !== undefined) {
+              var imageUrl = thumb_image.src;
+              var originalUrl = thumb_image.original;
+              if (originalUrl !== undefined && urlUtil.getHostName(thumb_image.original) !== undefined) {
+                imageUrl = thumb_image.original;
+              }
+              var thumb = new Thumb({src: imageUrl});
+              thumb.description = thumb_image.description;
+              imageUtil
+                .sizeOfImageUrl(imageUrl)
+                .then((res) => {
+                  thumb.w = res.w;
+                  thumb.h = res.h;
+                  newsItem.thumb = thumb.toJSON();
+                  processNewsNode(newsItem);
+                })
+                .catch((res) => {
+                  thumb.w = res.w;
+                  thumb.h = res.h;
+                  newsItem.thumb = thumb.toJSON();
+                  processNewsNode(newsItem);
+                });
+
+            } else {
+              processNewsNode(newsItem);
+            }
+
+          }
+
+        });
+
+      });
+    }
   });
 }
 
@@ -265,10 +350,11 @@ export function categoryCreate() {}
 
 export default {
   publisher,
-  catelogry,
+  category,
   responseMsg,
   responseError,
   responseFail,
-  catelogrySave
+  catelogrySave,
+  containers
 
 };

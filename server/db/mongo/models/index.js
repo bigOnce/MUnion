@@ -6,4 +6,7 @@ export default function loadModels() {
   require('./newsnode');
   require('./publisher');
   require('./apps');
+  require('./catelogry');
+  require('./thumb');
+  require('./news');
 }

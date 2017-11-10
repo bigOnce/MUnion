@@ -1,15 +1,13 @@
-import Thumb from './thumb';
-
 import mongoose from 'mongoose';
-import Constant from '../../../../constant';
+import Constant from '../../../../../constant';
 
 const Schema = mongoose.Schema;
 
-const newsNodeSchema = new Schema({
+const newsItemSchema = new Schema({
     source: String,
     title: {
         type: String,
-        default: 'News node title !!!'
+        default: ' '
     },
     type: {
         type: Number,
@@ -32,14 +30,19 @@ const newsNodeSchema = new Schema({
     },
     comment: {
         type: String
+    },
+    domain: {
+        type: String,
+        required: true
     }
 }, {versionKey: false});
 
-newsNodeSchema.methods.toJSON = function () {
+newsItemSchema.methods.toJSON = function () {
     const obj = this.toObject();
     delete obj._id;
     delete obj.source;
+    delete obj.domain;
     return obj;
 }; // remove _id, appId in result
 
-export default mongoose.model('NewsNode', newsNodeSchema);
+export default mongoose.model('NewsItem', newsItemSchema);

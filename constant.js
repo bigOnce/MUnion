@@ -9,6 +9,7 @@ module.exports = Object.freeze({
   kCaption: 'caption',
   kThumb: 'thumb',
   kTitle: 'title',
+  newsHashKey: 'nnews',
 
   // CODE
   TEXT_CODE: 1,
@@ -26,6 +27,10 @@ module.exports = Object.freeze({
   NAVIGATOR_MENU_CODE: 50,
   NAVIGATOR_NEXT_CODE: 51,
   NAVIGATOR_PREV_CODE: 52,
+
+  // IMAGE SCALE TYPE
+  IMG_SCALE_TYPE_WIDTH: 'scalewidth',
+  IMG_SCALE_TYPE_HEIGHT: 'scaleheight',
 
   SUCCESS: 1,
   FAILED: 0,

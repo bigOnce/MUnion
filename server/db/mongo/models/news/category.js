@@ -1,27 +1,24 @@
 import mongoose from 'mongoose';
-import constant from '../constant';
+import Constant from '../../../../../constant';
 
 const Schema = mongoose.Schema;
 
-const catelogrySchema = new Schema({
-
+const categorySchema = new Schema({
     code: String,
     title: {
         type: String,
-        default: 'Define name for catelogry'
+        default: ' '
     },
     type: {
         type: Number,
-        default: constant.CATEGORY_CODE,
+        default: Constant.CATEGORY_CODE,
         required: true
     },
     domain: String,
     source: {
         type: String,
         required: true
-    },
-    containers: []
-
+    }
 }, {versionKey: false});
 
-export default mongoose.model('Catelogry', catelogrySchema);
+export default mongoose.model('Category', categorySchema);

@@ -1,6 +1,9 @@
 import Filters from '../../models/filter';
 import Constant from '../../../../../Constant';
-import utils from '../../utils';
+import Utils from '../../utils';
+import Publishers from '../../models/publisher';
+import Catelogry from '../../models/catelogry';
+import {Publisher, Category} from '../../models/news';
 
 var Promise = require('promise');
 
@@ -8,9 +11,16 @@ export function scrapedomain(domain) {
     return new Promise(function (resolve, reject) {
         var finishedPub = false;
         var finishedCat = false;
-        var finishedCon = true;
+        var finishedCon = false;
 
         const resultCallback = ((results) => {
+            if (finishedPub === true) 
+                console.log("finishedPub");
+            if (finishedCat === true) 
+                console.log("finishedCat");
+            if (finishedCon === true) 
+                console.log("finishedCon");
+            
             if (finishedPub && finishedCat && finishedCon) 
                 resolve(results);
             }
@@ -28,56 +38,111 @@ export function scrapedomain(domain) {
                 }
                 // HAD FOUND TO PROCESS WITH FILTERS
                 if (result) {
-
                     const {filter, name, type} = result;
-                    const {publisher, catelogries, contents, containers} = filter;
+                    const {publisher, categories, contents, containers} = filter;
 
-                    // PROCESS PUBLISHER
+                    //PROCESS PUBLISHER FILTER
                     if (publisher !== undefined) {
-                        // utils     .scrape     .scrapeUrl(publisher.url, publisher.filter)
-                        // .then((results) => {         utils             .factory .publisher(results,
-                        // domain)             .then((result) => { resultLists.push(result);
-                        //     finishedPub = true; resultCallback(resultLists);             })
-                        //   .catch((err, result) => {                 resultLists.push(result);
-                        //         finishedPub = true;                 resultCallback(resultLists);
-                        //        });     });
+                        Publisher.findOne({
+                            domain: domain
+                        }, (err, object) => {
+                            if (err) 
+                                throw
+                            err;
+                            if (!object) {
+                                Utils
+                                    .scrape
+                                    .scrapeUrl(publisher.url, publisher.filter)
+                                    .then((results) => {
+                                        if (results !== undefined) {
+                                            Utils
+                                                .factory
+                                                .publisher(results, domain)
+                                                .then((result) => {
+                                                    resultLists.push(result);
+                                                    finishedPub = true;
+                                                    resultCallback(resultLists);
+                                                })
+                                                .catch((err, result) => {
+                                                    resultLists.push(result);
+                                                    finishedPub = true;
+                                                    resultCallback(resultLists);
+                                                });
+                                        } else {
+                                            finishedPub = true;
+                                            resultCallback(resultLists);
+                                        }
+                                    });
+                            } else {
+                                finishedPub = true;
+                                resultCallback(resultLists);
+                            }
+                        });
                     }
 
-                    if (catelogries !== undefined) {
-                        var catelogriesCount = catelogries.length - 1;
-                        catelogries.map((filterItem) => {
-                            // utils     .scrape     .scrapeUrl(filterItem.url, {         [filterItem.fid]:
-                            // filterItem.filter     })     .then((results) => {         utils .factory
-                            //        .catelogry(results, domain)             .then((result) => {
-                            //      catelogriesCount--; resultLists.push(result);                 if
-                            // (catelogriesCount === 0) {               finishedCat = true;
-                            // } resultCallback(resultLists);             });     });
+                    //PROCESS CATEGORY FILTER
+                    if (categories !== undefined) {
+                        var categoryCounter = catelogries.length - 1;
+                        categories.map((filterItem) => {
+                            if (filterItem.url !== undefined) {
+                                Utils
+                                    .scrape
+                                    .scrapeUrl(filterItem.url, {
+                                        [filterItem.fid]: filterItem.filter
+                                    })
+                                    .then((results) => {
+                                        Utils
+                                            .factory
+                                            .category(results, domain)
+                                            .then((result) => {
+                                                categoryCounter--;
+                                                resultLists.push(result);
+                                                if (categoryCounter === 0) {
+                                                    finishedCat = true;
+                                                }
+                                                resultCallback(resultLists);
+                                            });
+                                    });
+                            }
                         })
                     }
 
                     if (containers !== undefined) {
                         const {catelogries} = containers;
+                        var itemCount = catelogries.length - 1;
                         if (catelogries !== undefined && catelogries.length) {
                             catelogries.map((object, index) => {
                                 const {url, filter} = object;
                                 if (url !== undefined && filter !== undefined) {
-                                    utils
+                                    Utils
                                         .scrape
-                                        .scrapeUrl(url, {[index]: filter})
+                                        .scrapeUrl(url, {'data': filter})
                                         .then((results) => {
-                                            console.log(JSON.stringify(results));
+                                            Utils
+                                                .factory
+                                                .containers(results.data, domain, url)
+                                                .then((result) => {
+                                                    itemCount = itemCount - 1;
+                                                    resultLists.push(result);
+                                                    if (itemCount === 0) {
+                                                        finishedCon = true;
+                                                    }
+                                                    resultCallback(resultLists);
+                                                });
                                         });
                                 }
                             });
+                        } else {
+                            finishedCon = true;
                         }
                     }
 
                 } else {
-                    resolve(utils.factory.responseMsg('Not found filter for domain: ' + domain));
+                    resolve(Utils.factory.responseMsg('Not found filter for domain: ' + domain));
                 }
             });
         } else 
-            resolve(utils.factory.responseMsg('Domain incorrect!'));
+            resolve(Utils.factory.responseMsg('Domain incorrect!'));
         }
     );
 }

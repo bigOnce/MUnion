@@ -1,3 +1,6 @@
+var RandExp = require('randexp');
+var crypto = require('crypto');
+
 export function isEmpty(str) {
     if (str === undefined || str === null) {
         return true;
@@ -55,10 +58,25 @@ export function urlComplete(url, domain) {
     return result;
 }
 
+export function generalCodeForUrl(url) {
+
+    var randexp = new RandExp(/(Code|code)[a-f0-9]{28}/);
+    randexp.max = 5;
+
+    if (url !== undefined && url.length) {
+        return crypto
+            .createHash('md5')
+            .update(url)
+            .digest("hex");
+    }
+    return randexp.gen();
+}
+
 export default {
     isEmpty,
     startWith,
     httpfactory,
     urlComplete,
-    endWith
+    endWith,
+    generalCodeForUrl
 }
