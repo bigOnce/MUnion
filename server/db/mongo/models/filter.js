@@ -13,7 +13,7 @@ const filterSchema = new Schema({
             url: String,
             filter: Object
         },
-        catelogries: [
+        categories: [
             {
                 fid: String,
                 url: String,
@@ -28,7 +28,7 @@ const filterSchema = new Schema({
             }
         ],
         containers: {
-            catelogries: [
+            category: [
                 {
                     url: String,
                     filter: Object

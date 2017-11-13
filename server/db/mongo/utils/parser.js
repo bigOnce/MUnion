@@ -2,11 +2,11 @@ import cheerio from 'cheerio';
 import request from 'request';
 import tinyreq from 'tinyreq';
 import scrapeIt from 'scrape-it';
-import string from './string';
+import urlUtil from './urls';
 
 export function parseUrl(url, callback) {
     if (url) {
-        url = string.httpfactory(url);
+        url = urlUtil.httpfactory(url);
         
         let webparse = {
             head: {},

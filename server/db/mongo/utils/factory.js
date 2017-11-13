@@ -25,9 +25,7 @@ export function publisher(publisher, domain) {
         code: hostName
       }, (err, pub) => {
 
-        if (err) {
-          throw err;
-        }
+        if (err) throw err;
 
         const processPublisher = (pub) => {
           pub.save((err) => {
@@ -69,11 +67,9 @@ export function publisher(publisher, domain) {
 
             // IF NOT ISEXIST LOGO - SAVE DATABASE
             processPublisher(newPublisher);
-
           }
         } else 
           console.log(pub);
-        resolve(pub);
       });
     }
   });
@@ -87,57 +83,62 @@ export function category(category, domain) {
     var hostName = urlUtil.getHostName(domain); // GET HOST NAME
     var {categories, sub_categories} = category; // GET CATELOGRY LIST AND SUBCATELOGRY LIST
 
+    // FUNC RETURN
     const returnCallback = ((resultList) => {
       resolve(resultList);
     });
 
     // IF IS EXIST HOSTNAME
     if (hostName.length) {
+
       //#################################
-      //
       //          CATELOGRY
-      //
       //#################################
-      var catelogriesTempList = [];
+      var categoriesTempList = [];
       if (categories !== undefined && categories.length > 0) {
-        const categoriesCount = categories.length - 1;
+        var categoriesCount = categories.length - 1;
         categories.map((item, index) => {
+
           // GET TITLE - URL FROM ITEM
           const {title, url} = item;
+
           // CHECK TITLE AND URL FOR HOME PAGE
           if (url === "/" || url === undefined) {
+
             // PARSE HOME PAGE
             catelogrySave(domain, domain, 'Trang Chủ', index, Constant.CATEGORY_CODE, hostName).then((rs) => {
-              catelogriesTempList.push(rs);
+              categoriesTempList.push(rs);
               categoriesCount --;
               if (0 === categoriesCount) {
-                returnCallback(catelogriesTempList);
+                returnCallback(categoriesTempList);
               }
             }).catch((rs) => {
-              catelogriesTempList.push(rs);
+              categoriesTempList.push(rs);
               categoriesCount --;
               if (index === categoriesCount) {
-                returnCallback(catelogriesTempList);
+                returnCallback(categoriesTempList);
               }
             });
           } else {
+
             // FOTMAR URL
-            var newUrl = stringUtil.urlComplete(url, domain);
+            var newUrl = urlUtil.urlComplete(url, domain);
+
             // REMOVE CASE HOME PAGE
             if (newUrl !== domain) {
+
               // CREATE CATELOGRY WITH NEW URL
               catelogrySave(newUrl, domain, title, index, Constant.CATEGORY_CODE, hostName).then((rs) => {
-                
-                catelogriesTempList.push(rs);
+                categoriesTempList.push(rs);
                 categoriesCount --;
                 if (0 === categoriesCount) {
-                  returnCallback(catelogriesTempList);
+                  returnCallback(categoriesTempList);
                 }
               }).catch((rs) => {
-                catelogriesTempList.push(rs);
+                categoriesTempList.push(rs);
                 categoriesCount --;
                 if (0 === categoriesCount) {
-                  returnCallback(catelogriesTempList);
+                  returnCallback(categoriesTempList);
                 }
               });
             }
@@ -155,31 +156,29 @@ export function category(category, domain) {
       // #################################
 
       if (sub_categories !== undefined && sub_categories.length > 0) {
-        var sub_catelogriesTempList = [];
+        var sub_categoriesTempList = [];
         var subcategoriesCount = sub_categories.length - 1;
         sub_categories.map((item, index) => {
 
           const {title, url} = item;
-          console.log(title);
-          console.log(url);
+   
 
           if (title !== undefined && url !== undefined) {
-            var newUrl = stringUtil.urlComplete(url, domain);
-            console.log(newUrl);
+            var newUrl = urlUtil.urlComplete(url, domain);
             // REMOVE CASE HOME PAGE
             if (newUrl !== domain) {
               // SUB CATELOGRY SAVEl
               catelogrySave(newUrl, domain, title, index, Constant.SUB_1_CATEGORY_CODE, hostName).then((rs) => {
-                sub_catelogriesTempList.push(rs);
+                sub_categoriesTempList.push(rs);
                 subcategoriesCount--;
                 if (0 === subcategoriesCount) {
-                  returnCallback(sub_catelogriesTempList);
+                  returnCallback(sub_categoriesTempList);
                 }
               }).catch((rs) => {
-                sub_catelogriesTempList.push(rs);
+                sub_categoriesTempList.push(rs);
                 subcategoriesCount--;
                 if (0 === subcategoriesCount) {
-                  returnCallback(sub_catelogriesTempList);
+                  returnCallback(sub_categoriesTempList);
                 }
               });
             }
@@ -237,6 +236,7 @@ export function catelogrySave(url, domain, title, index, type, hostname) {
 export function containers(container, domain, url) {
   return new Promise(function (resolve, reject) {
     if (container !== undefined && domain !== undefined && url !== undefined) {
+      
       container.map((item, index) => {
         const {
           related,
@@ -254,11 +254,12 @@ export function containers(container, domain, url) {
 
           if (err) 
             throw err;
-          
-          if (object !== undefined) {
+          console.log(object);
+          if (object) {
             // ISEXIST OBJECT WITH URL IN DB
             resolve(object);
           } else {
+
             // NOT EXIST OBJECT WITH URL IN DB FUNCTION PROCESS NEWS ITEM
             const processNewsNode = ((item) => {
               item.save((err, object) => {
@@ -269,9 +270,10 @@ export function containers(container, domain, url) {
               });
             });
 
+
             var newsItem = new NewsItem({source: url});
             newsItem.title = title;
-            newsItem.code = stringUtil.generalCodeForUrl(url);
+            newsItem.code = urlUtil.generalCodeForUrl(url);
             newsItem.type = Constant.ANCHOR_CODE;
             newsItem.content = description;
             newsItem.comments = comment;

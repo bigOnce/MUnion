@@ -16,7 +16,7 @@ export function formatImageFromUrl(src, type) {
 
             var hostName = urlUtil.getHostName(src);
             if (hostName !== undefined && hostName.trim().length) {
-                const code = stringUtil.generalCodeForUrl(src);
+                const code = urlUtil.generalCodeForUrl(src);
                 const img_name = hostName + '_' + code + '.jpg';
                 const img_path = "./src/images/" + img_name;
                 var thumb = new Thumb({src: src});
@@ -43,29 +43,28 @@ export function formatImageFromUrl(src, type) {
 
 export function scaleAndCacheImageFromUrl(src, type, size) {
     return new Promise((resolve, reject) => {
-        console.log(src + type + size);
 
         if (src === undefined || !src.trim().length) {
             reject('src is null !!!');
         } else {
-
+            
             var hostName = urlUtil.getHostName(src);
+            
             if (hostName !== undefined && hostName.trim().length) {
-                const code = stringUtil.generalCodeForUrl(src);
-                const imgName = hostName + '_' + code + "_" + type + "_" + size + '.jpg'; // NAME OF IMAGE
+
+                const code = urlUtil.generalCodeForUrl(src);
+                const imgName = hostName + '_' + code + "_" + type + "_" + size + '.jpg'; // NAME OF IMAGE 
                 const imgPath = "./src/images/" + imgName; // PATH OF IMAGE ON PROJECT
                 const imgUrl = Constant.SRC_IMAGE_PATH + '/' + imgName; // URL IMAGE FOR CLIENT
-
+                
                 var thumb = new Thumb({src: src});
                 thumb.path = imgUrl;
-                console.log(imgUrl);
                 Jimp.read(src, function (err, img) {
                     if (err) 
                         throw err;
                     
                     var w = img.bitmap.width; //  width of the image
                     var h = img.bitmap.height; // height of the image
-                    console.log(img);
                     // SCALE IMAGHE
                     switch (type) {
                         case Constant.IMG_SCALE_TYPE_WIDTH:
@@ -96,6 +95,8 @@ export function scaleAndCacheImageFromUrl(src, type, size) {
                     }
 
                 });
+            } else {
+                reject('Host name is not defined');
             }
 
         }

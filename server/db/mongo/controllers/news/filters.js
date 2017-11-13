@@ -1,9 +1,10 @@
 import Filters from '../../models/filter'
 import Constant from '../../../../../constant';
+import urlUtil from '../../utils/urls';
 
 export function setFilter(req, res) {
 
-    const {
+    var {
         rs,
         type,
         domain,
@@ -11,19 +12,25 @@ export function setFilter(req, res) {
         url,
         filter
     } = req.body.set; // GET PARAMS IN REQUEST
+
     if (filter && type && domain) {
+        
         var newFilter = {};
+        domain = urlUtil.formatDomain(domain);
+
         // FIND FILTER FOR DOMAIN
         Filters.findOne({
             domain: domain
         }, function (err, object) {
 
+            // THROW ERROR
             if (err) 
                 throw err;
             
+            // FIND FILLTER IN DB
             if (object) {
 
-                var {publisher, catelogries, contents, containers} = object.filter;
+                var {publisher, categories, contents, containers} = object.filter;
                 switch (type) {
                     case Constant.PUBLISHER_CODE:
                         {
@@ -37,22 +44,22 @@ export function setFilter(req, res) {
                         break;
                     case Constant.CATEGORY_CODE:
                         {
-                            if (catelogries === undefined) {
-                                catelogries = [];
+                            if (categories === undefined) {
+                                categories = [];
                             }
                             filter.map((f_item, f_index) => {
-                                var hasf_Item = catelogries.some((item) => {
+                                var hasf_Item = categories.some((item) => {
                                     return item.fid === f_item.fid;
                                 });
 
                                 if (hasf_Item) {
-                                    catelogries.map(item => {
+                                    categories.map(item => {
                                         if (item.fid === f_item.fid) {
                                             item.filter = f_item.filter;
                                         }
                                     })
                                 } else {
-                                    catelogries.push(f_item);
+                                    categories.push(f_item);
                                 }
                             });
 
@@ -64,11 +71,11 @@ export function setFilter(req, res) {
                     case Constant.CONTAINERS_CODE:
                         {
                             containers = containers || {};
-                            var {catelogries} = filter;
-                            if (catelogries !== undefined) {
+                            var {category} = filter;
+                            if (category !== undefined) {
                                 containers
-                                    .catelogries
-                                    .push({url, filter: catelogries});
+                                    .category
+                                    .push({url, filter: category});
                             }
 
                         }
@@ -103,7 +110,7 @@ export function setFilter(req, res) {
                                 name,
                                 domain,
                                 filter: {
-                                    catelogries: filter
+                                    categories: filter
                                 },
                                 type
                             });
@@ -111,13 +118,13 @@ export function setFilter(req, res) {
                         break;
                     case Constant.CONTAINERS_CODE:
                         {
-                            var {catelogries} = filter;
+                            var {category} = filter;
                             newFilter = new Filters({
                                 name,
                                 domain,
                                 filter: {
                                     containers: {
-                                        catelogries: catelogries || {}
+                                        category: category || {}
                                     }
                                 },
                                 type

@@ -10,6 +10,7 @@ var Promise = require('promise');
  * @param {url, data} res
  */
 export function scrapeWithFilter(req, res) {
+    
     var filterReq = req.body.filter;
     const url = req.body.url;
 

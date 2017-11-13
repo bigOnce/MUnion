@@ -41,15 +41,21 @@ export function scrapedomain(domain) {
                     const {filter, name, type} = result;
                     const {publisher, categories, contents, containers} = filter;
 
-                    //PROCESS PUBLISHER FILTER
+                    /////////////////////////////////
+                    //  PROCESS PUBLISHER FILTER
+                    /////////////////////////////////
                     if (publisher !== undefined) {
                         Publisher.findOne({
                             domain: domain
                         }, (err, object) => {
+
+                            // ERROR
                             if (err) 
-                                throw
-                            err;
+                                throw err;
+                                
+                            // NOT EXIST PUBLISHER IN DB
                             if (!object) {
+
                                 Utils
                                     .scrape
                                     .scrapeUrl(publisher.url, publisher.filter)
@@ -73,6 +79,7 @@ export function scrapedomain(domain) {
                                             resultCallback(resultLists);
                                         }
                                     });
+                                    
                             } else {
                                 finishedPub = true;
                                 resultCallback(resultLists);
@@ -80,9 +87,12 @@ export function scrapedomain(domain) {
                         });
                     }
 
+                    ///////////////////////////////////
                     //PROCESS CATEGORY FILTER
+                    //////////////////////////////////
+
                     if (categories !== undefined) {
-                        var categoryCounter = catelogries.length - 1;
+                        var categoryCounter = categories.length - 1;
                         categories.map((filterItem) => {
                             if (filterItem.url !== undefined) {
                                 Utils
@@ -107,13 +117,19 @@ export function scrapedomain(domain) {
                         })
                     }
 
+                    //////////////////////////////////
+                    // Container
+                    //////////////////////////////////
+
                     if (containers !== undefined) {
-                        const {catelogries} = containers;
-                        var itemCount = catelogries.length - 1;
-                        if (catelogries !== undefined && catelogries.length) {
-                            catelogries.map((object, index) => {
+                        const {category} = containers;
+                        var itemCount = category.length - 1;
+                        
+                        if (category !== undefined && category.length) {
+                            category.map((object, index) => {
                                 const {url, filter} = object;
                                 if (url !== undefined && filter !== undefined) {
+
                                     Utils
                                         .scrape
                                         .scrapeUrl(url, {'data': filter})
@@ -134,6 +150,7 @@ export function scrapedomain(domain) {
                             });
                         } else {
                             finishedCon = true;
+                            resultCallback(resultLists);                            
                         }
                     }
 
