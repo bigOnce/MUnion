@@ -1,15 +1,15 @@
 // freeze to prevent user change value
 module.exports = Object.freeze({
   // Key
-  kSource: 'src',
-  kHeight: 'h',
-  kWidth: 'w',
-  kType: 'type',
-  kContent: 'content',
-  kCaption: 'caption',
-  kThumb: 'thumb',
-  kTitle: 'title',
-  newsHashKey: 'nnews',
+  kSource: "src",
+  kHeight: "h",
+  kWidth: "w",
+  kType: "type",
+  kContent: "content",
+  kCaption: "caption",
+  kThumb: "thumb",
+  kTitle: "title",
+  newsHashKey: "nnews",
 
   // CODE
   TEXT_CODE: 1,
@@ -29,8 +29,8 @@ module.exports = Object.freeze({
   NAVIGATOR_PREV_CODE: 52,
 
   // IMAGE SCALE TYPE
-  IMG_SCALE_TYPE_WIDTH: 'scalewidth',
-  IMG_SCALE_TYPE_HEIGHT: 'scaleheight',
+  IMG_SCALE_TYPE_WIDTH: "scalewidth",
+  IMG_SCALE_TYPE_HEIGHT: "scaleheight",
 
   SUCCESS: 1,
   FAILED: 0,
@@ -49,15 +49,17 @@ module.exports = Object.freeze({
   ERROR_BAD_GATEWAY: 502,
 
   // Define APPS Id
-  NEWS_APP_ID: 'vinabao',
+  NEWS_APP_ID: "vinabao",
 
   // Category ID
-  CATEGORY_MAIN_ID: 'categories',
-  CATEGORY_SUB_1_ID: 'sub_categories',
-  CATEGORY_SUB_2_ID: 'sub_categories_2',
+  CATEGORY_MAIN_ID: "categories",
+  CATEGORY_SUB_1_ID: "sub_categories",
+  CATEGORY_SUB_2_ID: "sub_categories_2",
 
   // API PATHS
-  SRC_IMAGE_PATH: '/src/images',
-  SRC_AUDIO_PATH: '/src/mp3'
+  SRC_IMAGE_PATH: "/src/images",
+  SRC_AUDIO_PATH: "/src/mp3",
 
+  // SIZE
+  LOGO_WIDTH_SIZE: 200
 });

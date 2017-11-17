@@ -1,48 +1,50 @@
-import mongoose from 'mongoose';
-import Constant from '../../../../../constant';
+import mongoose from "mongoose";
+import Constant from "../../../../../constant";
 
 const Schema = mongoose.Schema;
 
-const newsItemSchema = new Schema({
+const newsItemSchema = new Schema(
+  {
     source: String,
     title: {
-        type: String,
-        default: ' '
+      type: String,
+      default: " "
     },
     type: {
-        type: Number,
-        default: Constant.ANCHOR_CODE,
-        required: true
+      type: Number,
+      default: Constant.ANCHOR_CODE,
+      required: true
     },
-    domain: String,
     path: {
-        type: String
+      type: String
     },
     code: {
-        type: String,
-        default: '0x00'
+      type: String,
+      default: "0x00"
     },
     thumb: {
-        type: Object
+      type: Object
     },
     content: {
-        type: String
+      type: String
     },
     comment: {
-        type: String
+      type: String
     },
     domain: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     }
-}, {versionKey: false});
+  },
+  { versionKey: false }
+);
 
-newsItemSchema.methods.toJSON = function () {
-    const obj = this.toObject();
-    delete obj._id;
-    delete obj.source;
-    delete obj.domain;
-    return obj;
+newsItemSchema.methods.toJSON = function() {
+  const obj = this.toObject();
+  delete obj._id;
+  delete obj.source;
+  delete obj.domain;
+  return obj;
 }; // remove _id, appId in result
 
-export default mongoose.model('NewsItem', newsItemSchema);
+export default mongoose.model("NewsItem", newsItemSchema);

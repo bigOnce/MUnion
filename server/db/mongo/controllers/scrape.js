@@ -1,72 +1,53 @@
-import {scrape} from '../utils';
-import Filters from '../models/filter';
-import Constant from '../../../../constant';
-import Scrape from '../service/news/scrape';
-var Promise = require('promise');
+import { scrape } from "../utils";
+import Filters from "../models/filter";
+import Constant from "../../../../constant";
+import Scrape from "../service/news/scrape";
+import Promise from "promise";
 
 /**
  * scrape url with htmltag{class, id}
  * @param {url, filter} req
- * @param {url, data} res
+ * @param {url, data} ress
  */
-export function scrapeWithFilter(req, res) {
-    
-    var filterReq = req.body.filter;
-    const url = req.body.url;
 
-    // vnexpress home
-    Filters
-        .findOne({filterId: 'vnexpress'})
-        .exec((err, filter) => {
-            if (err) {
-                console.log('Error in first query');
-                return res
-                    .status(500)
-                    .send('Something went wrong getting the data');
-            }
+const domainList = [];
 
-            if (url && filter) {
-                scrape.scrape(url, filter, (err, rs) => {
-                    if (err != Constant.ERROR) {
-                        res
-                            .status(200)
-                            .json(rs);
-                    } else {
-                        res
-                            .status(500)
-                            .send('error');
-                    }
-                });
-
-            } else 
-                res
-                    .status(500)
-                    .send('error');
-            }
-        );
-
+export function scrapePublishers(req, res) {
+  Promise.all([
+    // Scrape.scrapedomain('http://gamek.vn'),
+    // Scrape.scrapedomain('http://www.24h.com.vn'),
+    Scrape.scrapedomain("https://vnexpress.net")
+  ])
+    .then(results => {
+      res.status(Constant.RESPONSE_SUCCESS).json(results);
+    })
+    .catch(results => {
+      res.status(Constant.ERROR_BAD_REQUEST).json(results);
+    });
 }
 
-export function scrapeDomains(req, res) {
+export function scrapeContainers(req, res) {
+  Promise.all([Scrape.scrapeContainers("https://vnexpress.net")])
+    .then(result => {
+      res.status(Constant.RESPONSE_SUCCESS).json(result);
+    })
+    .catch(result => {
+      res.status(Constant.ERROR_BAD_REQUEST).json(result);
+    });
+}
 
-    Promise
-        .all([// Scrape.scrapedomain('http://gamek.vn'),
-        // Scrape.scrapedomain('http://www.24h.com.vn'),
-        Scrape.scrapedomain('https://vnexpress.net')])
-        .then((results) => {
-            res
-                .status(Constant.RESPONSE_SUCCESS)
-                .json(results);
-        })
-        .catch((results) => {
-            res
-                .status(Constant.ERROR_BAD_REQUEST)
-                .json(results);
-        });
-
+export function scrapeContents(req, res) {
+  Promise.all([Scrape.scrapeContents("https://vnexpress.net")])
+    .then(result => {
+      res.status(Constant.RESPONSE_SUCCESS).json(result);
+    })
+    .catch(result => {
+      res.status(Constant.ERROR_BAD_REQUEST).json(result);
+    });
 }
 
 export default {
-    scrapeWithFilter,
-    scrapeDomains
+  scrapePublishers,
+  scrapeContainers,
+  scrapeContents
 };
