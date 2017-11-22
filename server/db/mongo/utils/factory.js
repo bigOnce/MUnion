@@ -356,7 +356,7 @@ export function contents(contents, domain, url) {
           var content = new Content({ sourceUrl: url, title: title });
           content.domain = domain;
           content.description = description;
-          const nodeSize = node.length - 1;
+          const nodeSize = node.length;
           node.map((item, index) => {
             const { desc, image_url, str } = item;
             const funcSave = itemSave => {
@@ -370,16 +370,17 @@ export function contents(contents, domain, url) {
             if (image_url) {
               thumb = new Thumb({ src: image_url });
               thumb.desc = desc;
-              thumb.calcWidthHeight().then(thumbResult => {
+              thumb.calcWidthHeight(thumbResult => {
                 newsnode.thumbs.push(thumb);
                 content.nodes.push(newsnode);
-                if (nodeSize === index) {
+                if (nodeSize === content.nodes.length) {
+                  console.log(content);
                   funcSave(content);
                 }
               });
             } else {
               content.nodes.push(newsnode);
-              if (nodeSize === index) {
+              if (nodeSize === content.nodes.length) {
                 funcSave(content);
               }
             }

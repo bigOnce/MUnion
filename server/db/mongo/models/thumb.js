@@ -45,21 +45,20 @@ thumbSchema.methods.toJSON = function() {
   delete obj.title;
   return obj;
 }; // remove _id, appId in result
-thumbSchema.methods.calcWidthHeight = function calcWidthHeight(callback) {
-  return new Promise(function(resolve, reject) {
-    imageUtil
-      .sizeOfImageUrl(this.src)
-      .then(res => {
-        this.w = res.w;
-        this.h = res.h;
-        resolve(true);
-      })
-      .catch(res => {
-        this.w = res.w;
-        this.h = res.h;
-        resolve(true);
-      });
-  });
+thumbSchema.methods.calcWidthHeight = function(callback) {
+  const obj = this.toObject();
+  imageUtil
+    .sizeOfImageUrl(obj.src)
+    .then(res => {
+      obj.w = res.w;
+      obj.h = res.h;
+      callback(true);
+    })
+    .catch(res => {
+      obj.w = res.w;
+      obj.h = res.h;
+      callback(true);
+    });
 };
 
 export default mongoose.model("Thumb", thumbSchema);
