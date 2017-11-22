@@ -166,8 +166,13 @@ export function scrapeContents(domain) {
                       Utils.scrape
                         .scrapeUrl(sourceContent, itemFilter.filter)
                         .then(result => {
-                          console.log(sourceContent);
-                          console.log(JSON.stringify(result));
+                          if (result) {
+                            Utils.factory
+                              .contents(result, domain, sourceContent)
+                              .then(contents => {
+                                console.log(contents);
+                              });
+                          }
                         });
                     }
                   });

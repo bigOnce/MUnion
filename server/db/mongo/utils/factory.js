@@ -1,12 +1,17 @@
 import scrape from "./scrape";
 import Filters from "../models/filter";
-import NewsNode from "../models/newsnode";
 import Constant from "../../../../constant";
 import urlUtil from "./urls";
 import imageUtil from "./image";
 import stringUtil from "./string";
 import Thumb from "../models/thumb";
-import { Category, Publisher, NewsItem, Content } from "../models/news";
+import {
+  Category,
+  Publisher,
+  NewsItem,
+  Content,
+  NewsNode
+} from "../models/news";
 import Promise from "promise";
 var Jimp = require("jimp");
 
@@ -331,6 +336,60 @@ export function containers(container, domain, categoryUrl) {
   });
 }
 
+export function contents(contents, domain, url) {
+  // XU LI KHI CO NOI DUNG VE
+  if (contents) {
+    const {
+      node,
+      url,
+      thumb_image,
+      keywords,
+      description,
+      title,
+      publisherTime
+    } = contents;
+    if (node !== undefined && node.length) {
+      Content.find({ source: url }, (err, object) => {
+        if (err) throw err;
+
+        if (!object || !object.length) {
+          var content = new Content({ sourceUrl: url, title: title });
+          content.domain = domain;
+          content.description = description;
+          const nodeSize = node.length - 1;
+          node.map((item, index) => {
+            const { desc, image_url, str } = item;
+            const funcSave = itemSave => {
+              itemSave.save();
+            };
+
+            var newsnode = new NewsNode();
+            newsnode.content = str;
+            newsnode.index = index;
+            var thumb = null;
+            if (image_url) {
+              thumb = new Thumb({ src: image_url });
+              thumb.desc = desc;
+              thumb.calcWidthHeight().then(thumbResult => {
+                newsnode.thumbs.push(thumb);
+                content.nodes.push(newsnode);
+                if (nodeSize === index) {
+                  funcSave(content);
+                }
+              });
+            } else {
+              content.nodes.push(newsnode);
+              if (nodeSize === index) {
+                funcSave(content);
+              }
+            }
+          });
+        }
+      });
+    }
+  }
+}
+
 export function responseMsg(msg) {
   return msg
     ? {
@@ -372,5 +431,6 @@ export default {
   responseError,
   responseFail,
   catelogrySave,
-  containers
+  containers,
+  contents
 };

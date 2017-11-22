@@ -5,7 +5,6 @@ const Schema = mongoose.Schema;
 
 const contentSchema = new Schema(
   {
-    siteInfo: Object,
     sourceUrl: {
       type: String,
       required: true
@@ -22,6 +21,10 @@ const contentSchema = new Schema(
     },
     description: {
       type: String
+    },
+    timeCreate: {
+      type: Date,
+      default: Date.now
     },
     nodes: [],
     relatives: []

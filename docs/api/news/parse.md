@@ -63,6 +63,8 @@ https://vnexpress.net
   },
 
 
-{"node":{"selector":"body section[class=container] section[class=wrap_sidebar_12] section[class=sidebar_1]","data":{"content":{"listItem":"article > p","data":{"page":{"how":"x => x.text()"}}}}}}
 
   ```
+
+
+{"node":{"listItem":"body section[class=container] section[class=wrap_sidebar_12] section[class=sidebar_1] article > p, table","data":{"str":{"how":"x => x.text()"},"url":{"selector":"tbody tr td img","attr":"src"},"desc":{"selector":"tbody tr td p"}}}}
