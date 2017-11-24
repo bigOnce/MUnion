@@ -374,7 +374,6 @@ export function contents(contents, domain, url) {
                 newsnode.thumbs.push(thumb);
                 content.nodes.push(newsnode);
                 if (nodeSize === content.nodes.length) {
-                  console.log(content);
                   funcSave(content);
                 }
               });

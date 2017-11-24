@@ -1,5 +1,15 @@
 ## News parse api
 
+```
+- Publisher: đầu báo.
+- Category: danh mục báo (menu).
+- Container: các mục tin trong từng danh mục báo
+- Content: nội dung bài báo
+- Dữ liệu được lưu trữ trong 4 collection như trên, phân biệt với nhau bằng domain hoặc bằng source.
+- Việc parse thông tin cập nhật thực hiện như sau: 
+  + Cập nhật thông tin liên tục: container,
+```
+
 ## parse url
 ```parse api
 link : domain/api/parse,

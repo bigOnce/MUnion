@@ -18,7 +18,7 @@ export function formatImageFromUrl(src, type) {
         const code = urlUtil.generalCodeForUrl(src);
         const img_name = hostName + "_" + code + ".jpg";
         const img_path = "./src/images/" + img_name;
-        var thumb = new Thumb({ src: src });
+        thumb = new Thumb({ src: src });
         thumb.path = img_path;
 
         Jimp.read(src, function(err, img) {
@@ -95,7 +95,6 @@ export function sizeOfImageUrl(src) {
       reject({ h: 0, w: 0 });
     } else {
       var hostName = urlUtil.getHostName(src);
-
       if (hostName !== undefined && hostName.trim().length) {
         Jimp.read(src, function(err, img) {
           if (err) throw err;
